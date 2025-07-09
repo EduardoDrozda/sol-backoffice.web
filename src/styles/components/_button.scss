@@ -1,0 +1,76 @@
+.sol-button {
+  width: 100%;
+  padding: var(--spacing-3);
+  font-size: var(--font-size-md);
+  font-family: var(--font-family-base);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--color-primary-surface);
+  color: var(--color-primary-text);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &.primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+
+    &:hover {
+      background-color: var(--color-primary-dark);
+    }
+
+    &:active {
+      background-color: var(--color-primary);
+    }
+
+    &:disabled {
+      background-color: var(--color-text-disabled);
+      color: var(--text-disabled);
+      cursor: initial;
+    }
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-white);
+
+    &:hover {
+      background-color: var(--color-secondary-dark);
+    }
+
+    &:active {
+      background-color: var(--color-secondary);
+    }
+
+    &:disabled {
+      background-color: var(--color-text-disabled);
+      color: var(--text-disabled);
+      cursor: initial;
+    }
+  }
+
+  &.error {
+    background-color: var(--color-error-surface);
+    color: var(--color-error-text);
+
+    &:hover {
+      background-color: var(--color-error-dark);
+    }
+
+    &:active {
+      background-color: var(--color-error);
+    }
+
+    &:disabled {
+      background-color: var(--color-text-disabled);
+      color: var(--text-disabled);
+      cursor: initial;
+    }
+  }
+
+  &:disabled {
+    background-color: var(--color-text-disabled);
+    color: var(--text-disabled);
+    cursor: initial;
+  }
+}
+

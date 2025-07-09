@@ -1,0 +1,38 @@
+@use 'mixins/media' as *;
+
+.sign-in {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+      text-align: center;
+      margin-bottom: var(--spacing-2);
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    margin-bottom: var(--spacing-4);
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+}

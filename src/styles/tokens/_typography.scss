@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-family-base: 'Inter', sans-serif;
+
+  --font-size-xs: 0.75rem;   // 12px
+  --font-size-sm: 0.875rem;  // 14px
+  --font-size-md: 1rem;      // 16px
+  --font-size-lg: 1.125rem;  // 18px
+  --font-size-xl: 1.25rem;   // 20px
+  --font-size-2xl: 1.5rem;   // 24px
+  --font-size-3xl: 1.875rem; // 30px
+  --font-size-4xl: 2.25rem;  // 36px
+  --font-size-5xl: 2.5rem;   // 40px
+  --font-size-6xl: 3rem;     // 48px
+  --font-size-7xl: 3.5rem;   // 56px
+  --font-size-8xl: 4rem;     // 64px
+  --font-size-9xl: 4.5rem;   // 72px
+  --font-size-10xl: 5rem;    // 80px
+
+  --line-height-base: 1.5;
+  --line-height-tight: 1.25;
+  --line-height-loose: 1.75;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+.sol-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-text);
+  font-family: var(--font-family-base);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-text);
+  font-family: var(--font-family-base);
+}
