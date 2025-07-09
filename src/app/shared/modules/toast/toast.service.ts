@@ -10,6 +10,7 @@ import { ToastComponent } from './toast.component';
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 export interface ToastParams {
+  title?: string;
   message: string;
   type?: ToastType;
   duration?: number;
@@ -21,11 +22,33 @@ export class ToastService {
   private envInjector = inject(EnvironmentInjector);
   private wrapper = this.ensureWrapper();
 
-  show({ message, type = 'info', duration = 3000 }: ToastParams) {
+  showSuccess(message: string) {
+    this.show({ message, type: 'success', title: 'Sucesso' });
+  }
+
+  showError(message: string) {
+    this.show({ message, type: 'error', title: 'Erro' });
+  }
+
+  showInfo(message: string) {
+    this.show({ message, type: 'info', title: 'Informação' });
+  }
+
+  showWarning(message: string) {
+    this.show({ message, type: 'warning', title: 'Atenção' });
+  }
+
+  private show({
+    message,
+    type = 'info',
+    duration = 3000,
+    title = 'Atenção'
+  }: ToastParams) {
     const toastRef = createComponent(ToastComponent, {
       environmentInjector: this.envInjector,
     });
 
+    toastRef.instance.title = title;
     toastRef.instance.message = message;
     toastRef.instance.type = type;
 

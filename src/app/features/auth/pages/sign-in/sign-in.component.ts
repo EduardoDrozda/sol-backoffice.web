@@ -21,8 +21,7 @@ export class SignInComponent {
 
   onSubmit() {
     this.authService.signIn(this.form.value).subscribe((response) => {
-      console.log(response);
-      this.toast.show({ message: 'Login berhasil', type: 'success' });
+      this.toast.showSuccess('Login realizado com sucesso');
     });
   }
 }

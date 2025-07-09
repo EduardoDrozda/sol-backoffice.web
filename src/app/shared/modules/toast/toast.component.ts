@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
       [class.info]="type === 'info'"
       [class.warning]="type === 'warning'"
     >
-      {{ message }}
+      <h3 class="toast-title">{{ title }}</h3>
+      <p class="toast-message">{{ message }}</p>
     </div>
   `,
   styles: [`
@@ -22,7 +23,6 @@ import { CommonModule } from '@angular/common';
       color: white;
       padding: 1rem 1.5rem;
       border-radius: 4px;
-      font-weight: bold;
       min-width: 250px;
       max-width: 400px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -42,6 +42,16 @@ import { CommonModule } from '@angular/common';
       }
     }
 
+    .toast-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .toast-message {
+      margin-top: 0.2rem;
+      font-size: 1rem;
+    }
+
     .success { background-color: #28a745; }
     .error   { background-color: #dc3545; }
     .info    { background-color: #17a2b8; }
@@ -51,4 +61,5 @@ import { CommonModule } from '@angular/common';
 export class ToastComponent {
   @Input({ required: true }) message!: string;
   @Input() type: 'success' | 'error' | 'info' | 'warning' = 'info';
+  @Input() title: string = 'Atenção';
 }
