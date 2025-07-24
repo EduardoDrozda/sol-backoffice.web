@@ -1,30 +1,38 @@
-<div class="sign-in">
-  <div class="sign-in__header">
-    <h1 class="sol-title">Login</h1>
-    <p class="sol-subtitle">Entre com seu e-mail e senha para acessar sua conta</p>
-  </div>
+<app-auth-layout>
+  <div class="sign-in">
+    <div class="sign-in__header">
+      <h1 class="sol-title">Login</h1>
+      <p class="sol-subtitle">Entre com seu e-mail e senha para acessar sua conta</p>
+    </div>
 
-  <form [formGroup]="form" class="sign-in__form" (ngSubmit)="onSubmit()">
-    <div class="sol-input-group">
-      <input type="email" id="email" class="sol-input primary" formControlName="email" placeholder="E-mail" />
+    <form [formGroup]="form" class="sign-in__form" (ngSubmit)="onSubmit()">
+      <div class="sol-input-group">
+        <input type="email" id="email" class="sol-input primary" formControlName="email" placeholder="E-mail" />
 
-      @if (form.get('email')?.errors && form.get('email')?.touched) {
+        @if (form.get('email')?.errors && form.get('email')?.touched) {
         <div class="sol-input-group__error">
           <p class="sol-error-message">E-mail inválido</p>
         </div>
-      }
-    </div>
+        }
+      </div>
 
-    <div class="sol-input-group">
-      <input type="password" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
+      <div class="sol-input-group">
+        <input type="password" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
 
-      @if (form.get('password')?.errors && form.get('password')?.touched) {
+        @if (form.get('password')?.errors && form.get('password')?.touched) {
         <div class="sol-input-group__error">
           <p class="sol-error-message">Senha inválida</p>
         </div>
-      }
-    </div>
+        }
+      </div>
 
-    <button type="submit" class="sol-button primary" [disabled]="form.invalid">Login</button>
-  </form>
-</div>
+      <button type="submit" class="sol-button primary" [disabled]="form.invalid || loading.isLoading('sign-in')">
+        @if (loading.isLoading('sign-in')) {
+        <app-loading [size]="4" [inline]="true" />
+        }
+        Login
+      </button>
+    </form>
+  </div>
+
+</app-auth-layout>

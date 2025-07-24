@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
@@ -18,8 +19,19 @@ export const authGuard: CanActivateFn = (route, state) => {
       router.navigate(['/sign-in']);
 
       return false;
+    },
+    error: (res: HttpErrorResponse) => {
+      if (res.status === HttpStatusCode.Unauthorized) {
+        toast.showError('Sessão expirada');
+        router.navigate(['/sign-in']);
+
+        return false;
+      }
+
+      toast.showError(res.error.message);
+      return false;
     }
-  })
+  });
 
   return true;
 };

@@ -1,0 +1,28 @@
+<div class="pwa-status" *ngIf="showInstallPrompt || updateAvailable || !isOnline">
+  <div class="pwa-install-prompt" *ngIf="showInstallPrompt && !isPWAInstalled">
+    <div class="pwa-install-content">
+      <span>{{ 'Instale o app' }}</span>
+      <button (click)="installPWA()" class="pwa-install-btn">
+        {{ isDevMode() ? 'Testar' : 'Instalar' }}
+      </button>
+      <button (click)="dismissInstallPrompt()" class="pwa-dismiss-btn">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <div class="pwa-update-prompt" *ngIf="updateAvailable">
+    <div class="pwa-update-content">
+      <span>Nova versão</span>
+      <button (click)="applyUpdate()" class="pwa-update-btn">
+        Atualizar
+      </button>
+    </div>
+  </div>
+
+  <div class="pwa-offline-status" *ngIf="!isOnline">
+    <div class="pwa-offline-content">
+      <span>Offline</span>
+    </div>
+  </div>
+</div>
