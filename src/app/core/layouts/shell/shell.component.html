@@ -1,12 +1,59 @@
 <app-pwa-status></app-pwa-status>
+
 <main class="shell-layout">
   <header class="shell-layout__header">
-    header
+    <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <span class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+    <span class="header-title">Sol Backoffice</span>
   </header>
+
   <div class="shell-layout__container">
-    <aside class="shell-layout__sidebar">
-      sidebar
+    <aside [class]="sidebarClasses">
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="/dashboard" class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="/users" class="nav-link" routerLink="/users" routerLinkActive="active">
+              <i class="fas fa-users"></i>
+              <span>Usuários</span>
+            </a>
+          </li>
+          <li>
+            <a href="/reports" class="nav-link" routerLink="/reports" routerLinkActive="active">
+              <i class="fas fa-chart-bar"></i>
+              <span>Relatórios</span>
+            </a>
+          </li>
+          <li>
+            <a href="/settings" class="nav-link" routerLink="/settings" routerLinkActive="active">
+              <i class="fas fa-cog"></i>
+              <span>Configurações</span>
+            </a>
+          </li>
+          <li>
+            <a href="/profile" class="nav-link" routerLink="/profile" routerLinkActive="active">
+              <i class="fas fa-user-circle"></i>
+              <span>Perfil</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </aside>
+
+    <div class="sidebar-overlay"
+         [class.overlay-visible]="isSidebarOpen && isMobile"
+         (click)="closeSidebar()"></div>
+
     <section class="shell-layout__content">
       <router-outlet />
     </section>
