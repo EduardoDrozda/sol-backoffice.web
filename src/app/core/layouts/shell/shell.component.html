@@ -14,35 +14,43 @@
 
   <div class="shell-layout__container">
     <aside [class]="sidebarClasses">
+
+      <div class="sidebar-header">
+        <span class="sidebar-title">Menu</span>
+        <button class="sidebar-close" (click)="closeSidebar()" aria-label="Close sidebar">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
       <nav class="sidebar-nav">
         <ul>
           <li>
             <a href="/dashboard" class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-              <i class="fas fa-tachometer-alt"></i>
+              <i class="fa-solid fa-gauge-high"></i>
               <span>Dashboard</span>
             </a>
           </li>
           <li>
             <a href="/users" class="nav-link" routerLink="/users" routerLinkActive="active">
-              <i class="fas fa-users"></i>
+              <i class="fa-solid fa-users"></i>
               <span>Usuários</span>
             </a>
           </li>
           <li>
             <a href="/reports" class="nav-link" routerLink="/reports" routerLinkActive="active">
-              <i class="fas fa-chart-bar"></i>
+              <i class="fa-solid fa-chart-line"></i>
               <span>Relatórios</span>
             </a>
           </li>
           <li>
             <a href="/settings" class="nav-link" routerLink="/settings" routerLinkActive="active">
-              <i class="fas fa-cog"></i>
+              <i class="fa-solid fa-gear"></i>
               <span>Configurações</span>
             </a>
           </li>
           <li>
             <a href="/profile" class="nav-link" routerLink="/profile" routerLinkActive="active">
-              <i class="fas fa-user-circle"></i>
+              <i class="fa-solid fa-user"></i>
               <span>Perfil</span>
             </a>
           </li>
