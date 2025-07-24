@@ -1,17 +1,26 @@
 import { Component, HostListener } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { PwaStatusComponent } from '@core/components/pwa-status/pwa-status.component';
 import { CommonModule } from '@angular/common';
+import { RouteOptions } from '@core/models/route-options.model';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, PwaStatusComponent, CommonModule],
+  imports: [RouterOutlet, PwaStatusComponent, CommonModule, RouterLinkActive, RouterLink],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss'
 })
 export class ShellComponent {
   isSidebarOpen = true;
   isMobile = false;
+
+  routes: RouteOptions[] = [
+    {
+      title: 'Dashboard',
+      icon: 'fa-solid fa-gauge-high',
+      path: '/dashboard'
+    }
+  ];
 
   constructor() {
     this.checkScreenSize();
@@ -24,13 +33,11 @@ export class ShellComponent {
 
   private checkScreenSize(): void {
     const wasMobile = this.isMobile;
-    this.isMobile = window.innerWidth < 1024; // Breakpoint lg (1024px)
+    this.isMobile = window.innerWidth < 1024;
 
-    // Se mudou de desktop para mobile, fecha o sidebar
     if (!wasMobile && this.isMobile) {
       this.isSidebarOpen = false;
     }
-    // Se mudou de mobile para desktop, abre o sidebar
     else if (wasMobile && !this.isMobile) {
       this.isSidebarOpen = true;
     }
@@ -47,12 +54,8 @@ export class ShellComponent {
   get sidebarClasses(): string {
     const classes = ['shell-layout__sidebar'];
 
-    if (this.isSidebarOpen) {
-      classes.push('sidebar-open');
-    } else {
-      classes.push('sidebar-collapsed');
-    }
-
+    const sidebarClass = this.isSidebarOpen ? 'sidebar-open' : 'sidebar-collapsed';
+    classes.push(sidebarClass);
     return classes.join(' ');
   }
 }

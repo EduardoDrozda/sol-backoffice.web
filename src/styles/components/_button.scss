@@ -15,6 +15,7 @@
   &:hover {
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
+    background-color: var(--color-primary-dark);
   }
 
   &:active {
@@ -40,8 +41,8 @@
     border-color: var(--color-primary);
 
     &:hover {
-      background-color: var(--color-primary-dark);
-      border-color: var(--color-primary-dark);
+      background-color: var(--color-primary-light);
+      border-color: var(--color-primary-light);
     }
 
     &:active {
@@ -144,8 +145,8 @@
     border-color: var(--color-primary);
 
     &:hover {
-      background-color: var(--color-primary-dark);
-      border-color: var(--color-primary-dark);
+      background-color: var(--color-primary-light);
+      border-color: var(--color-primary-light);
     }
 
     &:active {

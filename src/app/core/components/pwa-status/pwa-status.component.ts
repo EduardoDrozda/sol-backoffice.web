@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PwaService } from '@core/services/pwa.service';
+import { PwaService } from '@core/services/pwa/pwa.service';
 import { Subscription } from 'rxjs';
-import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'app-pwa-status',
@@ -23,9 +22,11 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
+
       this.pwaService.updateAvailable.subscribe(available => {
         this.updateAvailable = available;
       }),
+
       this.pwaService.isOnline.subscribe(online => {
         this.isOnline = online;
       })
@@ -34,7 +35,7 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
     this.isPWAInstalled = this.pwaService.isPWAInstalled();
     this.setupInstallPrompt();
 
-    if (isDevMode() && !this.isPWAInstalled) {
+    if (!this.isPWAInstalled) {
       setTimeout(() => {
         this.showInstallPrompt = true;
       }, 3000);
@@ -59,12 +60,6 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
   }
 
   async installPWA(): Promise<void> {
-    if (isDevMode()) {
-      alert('Em desenvolvimento: Simulação de instalação do PWA');
-      this.showInstallPrompt = false;
-      return;
-    }
-
     await this.pwaService.installPWA();
     this.showInstallPrompt = false;
   }
@@ -75,9 +70,5 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
 
   async applyUpdate(): Promise<void> {
     await this.pwaService.applyUpdate();
-  }
-
-  isDevMode(): boolean {
-    return isDevMode();
   }
 }

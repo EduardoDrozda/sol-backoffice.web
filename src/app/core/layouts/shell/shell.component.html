@@ -2,14 +2,7 @@
 
 <main class="shell-layout">
   <header class="shell-layout__header">
-    <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
-    </button>
-    <span class="header-title">Sol Backoffice</span>
+    <i class="fa-solid fa-bars sidebar-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar"></i>
   </header>
 
   <div class="shell-layout__container">
@@ -24,43 +17,19 @@
 
       <nav class="sidebar-nav">
         <ul>
-          <li>
-            <a href="/dashboard" class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-              <i class="fa-solid fa-gauge-high"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="/users" class="nav-link" routerLink="/users" routerLinkActive="active">
-              <i class="fa-solid fa-users"></i>
-              <span>Usuários</span>
-            </a>
-          </li>
-          <li>
-            <a href="/reports" class="nav-link" routerLink="/reports" routerLinkActive="active">
-              <i class="fa-solid fa-chart-line"></i>
-              <span>Relatórios</span>
-            </a>
-          </li>
-          <li>
-            <a href="/settings" class="nav-link" routerLink="/settings" routerLinkActive="active">
-              <i class="fa-solid fa-gear"></i>
-              <span>Configurações</span>
-            </a>
-          </li>
-          <li>
-            <a href="/profile" class="nav-link" routerLink="/profile" routerLinkActive="active">
-              <i class="fa-solid fa-user"></i>
-              <span>Perfil</span>
-            </a>
-          </li>
+          @for (route of routes; track route.path) {
+            <li>
+              <a class="nav-link" routerLinkActive="active" [routerLink]="route.path">
+                <i [class]="route.icon"></i>
+                <span>{{ route.title }}</span>
+              </a>
+            </li>
+          }
         </ul>
       </nav>
     </aside>
 
-    <div class="sidebar-overlay"
-         [class.overlay-visible]="isSidebarOpen && isMobile"
-         (click)="closeSidebar()"></div>
+    <div class="sidebar-overlay" [class.overlay-visible]="isSidebarOpen && isMobile" (click)="closeSidebar()"></div>
 
     <section class="shell-layout__content">
       <router-outlet />
