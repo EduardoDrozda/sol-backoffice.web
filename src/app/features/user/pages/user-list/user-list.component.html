@@ -1,11 +1,23 @@
 <div class="user-list">
-  <h1 class="page-title">Usuários</h1>
+  <div class="user-list__header">
+    <h1 class="page-title">Usuários</h1>
+
+    <div class="user-list__new-user-container">
+      <button class="sol-button accent" (click)="openUserModal()">
+        <span class="sol-button__icon">
+          <i class="sol-icon sol-icon--plus"></i>
+        </span>
+        <span class="sol-button__text">Testar Modal</span>
+      </button>
+    </div>
+  </div>
 
   <form [formGroup]="form">
     <input type="text" formControlName="search" placeholder="Buscar..." class="sol-input" />
   </form>
 
   <div class="page-content">
+    <div class="user-list__content">
     <sol-table
       [columns]="columns"
       [data]="users"
@@ -15,5 +27,6 @@
       (pageChange)="onPageChange($event)"
       (sortChange)="onSortChange($event)"
     />
+    </div>
   </div>
 </div>

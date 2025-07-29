@@ -1,0 +1,21 @@
+@use 'mixins/media' as *;
+
+.user-modal {
+  width: 100%;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-4);
+
+    &__group {
+      display: flex;
+      width: 100%;
+
+      @include media(md) {
+        flex-direction: row;
+        column-gap: var(--spacing-2);
+      }
+    }
+  }
+}

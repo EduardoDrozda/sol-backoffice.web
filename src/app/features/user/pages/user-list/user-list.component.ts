@@ -4,9 +4,12 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { PaginationRequestModel, PaginationResponseModel } from '@core/models/pagination.model';
 import { UserModel } from '@core/models/user.model';
 import { UserService } from '@core/services/user/user.service';
+import { UserModalComponent } from '@features/user/components/user-modal/user-modal.component';
 import { TableColumn } from '@shared/components/table/models/table-column.model';
 import { TableComponent } from '@shared/components/table/table.component';
-import { BooleanToStringHelper, DateHelper } from '@shared/helpers';
+import { DateHelper } from '@shared/helpers';
+import { ModalService } from '@shared/modules/modal';
+import { ToastService } from '@shared/modules/toast';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
 @Component({
@@ -19,6 +22,8 @@ export class UserListComponent {
   private readonly userService = inject(UserService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly modalService = inject(ModalService);
+  private readonly toastService = inject(ToastService);
 
   form = this.formBuilder.group({ search: [''] });
 
@@ -163,7 +168,8 @@ export class UserListComponent {
       .toggleStatus(user.id, checked)
       .subscribe({
         next: (response) => {
-          console.log(response);
+          const message = checked ? 'Usuário ativado com sucesso' : 'Usuário desativado com sucesso';
+          this.toastService.showSuccess(message);
         }
       });
   }
@@ -177,4 +183,23 @@ export class UserListComponent {
     console.log('Resetar senha para', user);
     // Aqui você pode chamar o serviço correspondente
   }
+
+  openUserModal(user?: UserModel) {
+    const modalRef = this.modalService.open<UserModalComponent>(UserModalComponent, {
+      data: {
+        title: user ? 'Editar usuário' : 'Criar novo usuário',
+        user: user ?? null
+      },
+      width: '1000px'
+    });
+
+    modalRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Modal fechado com resultado:', result);
+      } else {
+        console.log('Modal fechado sem resultado');
+      }
+    });
+  }
+
 }

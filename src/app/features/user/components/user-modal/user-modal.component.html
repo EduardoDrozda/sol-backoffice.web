@@ -1,0 +1,42 @@
+<app-modal [title]="title">
+  <div modal-body class="user-modal">
+    <form [formGroup]="form" class="user-modal__form">
+      <div class="sol-input-group">
+        <input type="text" id="name" class="sol-input primary" formControlName="name" placeholder="Nome" />
+
+        @if (form.get('name')?.errors && form.get('name')?.touched) {
+        <div class="sol-input-group__error">
+          <p class="sol-error-message">Nome inválido</p>
+        </div>
+        }
+      </div>
+
+      <div class="sol-input-group">
+        <input type="email" id="email" class="sol-input primary" formControlName="email" placeholder="E-mail" />
+
+        @if (form.get('email')?.errors && form.get('email')?.touched) {
+        <div class="sol-input-group__error">
+          <p class="sol-error-message">E-mail inválido</p>
+        </div>
+        }
+      </div>
+
+      <div class="sol-input-group">
+        <input type="text" id="phone" class="sol-input primary" formControlName="phone" placeholder="Telefone" />
+      </div>
+
+      <div class="user-modal__form__group">
+        <div class="sol-input-group">
+          <input type="text" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
+        </div>
+        <div class="sol-input-group">
+          <input type="text" id="confirm-password" class="sol-input primary" formControlName="confirmPassword" placeholder="Confirmar senha" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div modal-footer class="modal-footer">
+    <button class="sol-button">Cancelar</button>
+    <button class="sol-button accent" [disabled]="form.invalid">Salvar</button>
+  </div>
+</app-modal>

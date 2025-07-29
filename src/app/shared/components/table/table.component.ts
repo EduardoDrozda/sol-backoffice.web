@@ -30,7 +30,7 @@ export class TableComponent<T> {
       this.sortKey = col.key;
       this.sortDirection = 'asc';
     }
-    console.log(this.sortKey, this.sortDirection);
+
     this.sortChange.emit({ key: this.sortKey, direction: this.sortDirection });
   }
 

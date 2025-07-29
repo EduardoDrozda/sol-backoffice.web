@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SwPush, SwUpdate } from '@angular/service-worker';
+import { ToastService } from '@shared/modules/toast';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class PwaService {
   private updateAvailable$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = new BehaviorSubject<boolean>(navigator.onLine);
+  private toastService = inject(ToastService);
 
   constructor(
     private swUpdate: SwUpdate,
@@ -22,6 +24,7 @@ export class PwaService {
       this.swUpdate.versionUpdates.subscribe(event => {
         if (event.type === 'VERSION_READY') {
           this.updateAvailable$.next(true);
+          this.toastService.showInfo('Atualização disponível');
         }
       });
 
@@ -58,7 +61,7 @@ export class PwaService {
 
   async requestNotificationPermission(): Promise<boolean> {
     if (!('Notification' in window)) {
-      console.warn('Este navegador não suporta notificações');
+      this.toastService.showWarning('Este navegador não suporta notificações');
       return false;
     }
 
@@ -67,7 +70,7 @@ export class PwaService {
     }
 
     if (Notification.permission === 'denied') {
-      console.warn('Permissão de notificação negada');
+      this.toastService.showWarning('Permissão de notificação negada');
       return false;
     }
 
@@ -87,7 +90,7 @@ export class PwaService {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
-        console.log('PWA instalado com sucesso');
+        this.toastService.showSuccess('PWA instalado com sucesso');
       }
       (window as any).deferredPrompt = null;
     }
