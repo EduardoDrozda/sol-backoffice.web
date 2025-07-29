@@ -61,7 +61,8 @@
           <button type="button" class="sol-table-actions__trigger" (click)="toggleActionsMenu(row)">
             <span class="sol-table-actions__icon">&#8942;</span>
           </button>
-          <ul *ngIf="isActionsMenuOpen(row)" class="sol-table-actions__menu">
+          @if (isActionsMenuOpen(row)) {
+          <ul class="sol-table-actions__menu">
             @for (action of col.actions ?? []; track action) {
             <li>
               <button type="button" (click)="onActionClick(action, row)">
@@ -71,6 +72,7 @@
             </li>
             }
           </ul>
+          }
         </div>
         }
         @default {
