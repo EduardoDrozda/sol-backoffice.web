@@ -1,0 +1,18 @@
+<div class="user-list">
+  <h1 class="page-title">Usuários</h1>
+
+  <form [formGroup]="form">
+    <input type="text" formControlName="search" placeholder="Buscar..." class="sol-input" />
+  </form>
+
+  <div class="page-content">
+    <sol-table
+      [columns]="columns"
+      [data]="users"
+      [paginable]="true"
+      [pagination]="pagination()"
+      (pageChange)="onPageChange($event)"
+      (sortChange)="onSortChange($event)"
+    />
+  </div>
+</div>

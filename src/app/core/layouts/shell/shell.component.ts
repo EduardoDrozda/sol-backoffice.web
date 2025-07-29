@@ -19,6 +19,11 @@ export class ShellComponent {
       title: 'Dashboard',
       icon: 'fa-solid fa-gauge-high',
       path: '/dashboard'
+    },
+    {
+      title: 'Usuários',
+      icon: 'fa-solid fa-users',
+      path: '/users'
     }
   ];
 

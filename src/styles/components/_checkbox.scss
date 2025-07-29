@@ -1,0 +1,15 @@
+.sol-table-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary, #007bff);
+  cursor: pointer;
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+
+  &:disabled {
+    accent-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

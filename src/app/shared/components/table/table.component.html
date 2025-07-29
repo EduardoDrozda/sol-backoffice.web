@@ -1,0 +1,88 @@
+<table class="sol-table">
+  <thead>
+    <tr>
+      @for (col of columns(); track col) {
+      <th (click)="onSort(col)" [class.sortable]="col.sortable">
+        {{ col.label }}
+        @if (col.sortable) {
+        <span class="sol-table-sort-icon">
+          @if (sortKey !== col.key) {
+          <i class="fa fa-sort"></i>
+          } @else if (sortKey === col.key && sortDirection === 'asc') {
+          <i class="fa fa-sort-up"></i>
+          } @else if (sortKey === col.key && sortDirection === 'desc') {
+          <i class="fa fa-sort-down"></i>
+          }
+        </span>
+        }
+      </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @if (data().length === 0) {
+    <tr>
+      <td [attr.colspan]="columns().length" class="sol-table-no-data">Sem dados</td>
+    </tr>
+    } @else {
+    @for (row of data(); track row) {
+    <tr>
+      @for (col of columns(); track col) {
+      <td>
+        @switch (col.type) {
+        @case ('checkbox') {
+        <input type="checkbox" class="sol-table-checkbox" [checked]="col.value ? col.value(row) : row[col.key]"
+          (change)="onChange(col, row, $event)" [disabled]="col.disabled" />
+        }
+        @case ('actions') {
+        <div class="sol-table-actions">
+          <button type="button" class="sol-table-actions__trigger" (click)="toggleActionsMenu(row)">
+            <span class="sol-table-actions__icon">&#8942;</span>
+          </button>
+          <ul *ngIf="isActionsMenuOpen(row)" class="sol-table-actions__menu">
+            @for (action of col.actions ?? []; track action) {
+            <li>
+              <button type="button" (click)="onActionClick(action, row)">
+                @if (action.icon) { <span class="action-icon">{{ action.icon }}</span> }
+                {{ action.label }}
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+        }
+        @default {
+        {{ col.value ? col.value(row) : row[col.key] }}
+        }
+        }
+      </td>
+      }
+    </tr>
+    }
+    }
+  </tbody>
+</table>
+@if (paginable && pagination) {
+<div class="sol-table-pagination-row right">
+  <button (click)="prevPage('first')" class="sol-table-pagination-btn icon-btn" [disabled]="pagination.page === 1">
+    <i class="fa fa-angle-double-left"></i>
+  </button>
+  <button (click)="prevPage()" class="sol-table-pagination-btn icon-btn" [disabled]="pagination.page === 1">
+    <i class="fa fa-angle-left"></i>
+  </button>
+  <ng-container *ngFor="let page of getPagesArray()">
+    <button (click)="goToPage(page)" class="sol-table-pagination-btn page-btn"
+      [class.active]="pagination.page === page">
+      {{ page }}
+    </button>
+  </ng-container>
+  <button (click)="nextPage()" class="sol-table-pagination-btn icon-btn"
+    [disabled]="pagination.page === pagination.totalPages">
+    <i class="fa fa-angle-right"></i>
+  </button>
+  <button (click)="nextPage('last')" class="sol-table-pagination-btn icon-btn"
+    [disabled]="pagination.page === pagination.totalPages">
+    <i class="fa fa-angle-double-right"></i>
+  </button>
+</div>
+}
