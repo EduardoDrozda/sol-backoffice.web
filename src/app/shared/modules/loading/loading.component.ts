@@ -38,14 +38,18 @@ import { CommonModule } from '@angular/common';
     }
 
     .spinner {
-      border: 3px solid var(--color-primary-light);
-      border-top-color: var(--color-primary);
+      border: 3px solid #e2e8f0;
+      border-top: 3px solid #1a1a1a;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+      display: inline-block;
     }
 
     @keyframes spin {
-      to {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
         transform: rotate(360deg);
       }
     }

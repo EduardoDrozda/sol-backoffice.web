@@ -9,6 +9,7 @@
     <sol-table
       [columns]="columns"
       [data]="users"
+      [loading]="loading()"
       [paginable]="true"
       [pagination]="pagination()"
       (pageChange)="onPageChange($event)"

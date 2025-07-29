@@ -9,12 +9,16 @@
   border-radius: 8px;
   overflow: visible; // Permite que menus dropdown apareçam fora da tabela
   position: relative; // Garante contexto para z-index do menu
+  table-layout: fixed; // Fixa o layout da tabela
 
   th,
   td {
     padding: 0.75rem 1rem;
     text-align: left;
     border-bottom: 1px solid #eee;
+    white-space: nowrap; // Evita quebra de linha
+    overflow: hidden; // Esconde conteúdo que excede
+    text-overflow: ellipsis; // Adiciona "..." quando o texto é cortado
   }
 
   th {
@@ -36,6 +40,55 @@
     td {
       position: relative;
     }
+  }
+
+  // Estilos específicos para diferentes tipos de colunas
+  .col-checkbox {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    text-align: center;
+  }
+
+  .col-actions {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+  }
+
+  // Colunas de data
+  .col-date {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+  }
+
+  // Colunas de email
+  .col-email {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  // Colunas de nome
+  .col-name {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+  }
+
+  // Colunas de role/cargo
+  .col-role {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+  }
+
+  // Colunas flexíveis (ocupam espaço restante)
+  .col-flex {
+    width: 1%;
+    min-width: 100px;
   }
 
   // Responsividade
@@ -174,6 +227,24 @@
     font-style: italic;
     background: transparent;
     vertical-align: middle;
+  }
+
+  &-loading {
+    text-align: center !important;
+    padding: var(--spacing-8) 0 !important;
+    background: transparent;
+    vertical-align: middle;
+    width: 100%;
+    min-height: 120px;
+  }
+
+  &-loading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 80px;
   }
 
   &-search-row {

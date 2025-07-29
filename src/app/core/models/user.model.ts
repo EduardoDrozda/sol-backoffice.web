@@ -7,7 +7,7 @@ export type UserModel = {
     name?: string | null;
   } | null;
   company_id: string | null;
-  created_at: Date;
-  updated_at: Date;
-  is_active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  isActive: boolean;
 }

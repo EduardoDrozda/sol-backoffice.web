@@ -1,11 +1,12 @@
 import { Component, Input, Signal, HostListener, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableColumn } from './models/table-column.model';
+import { LoadingComponent } from '@shared/modules/loading';
 
 @Component({
   selector: 'sol-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingComponent],
   templateUrl: './table.component.html',
 })
 export class TableComponent<T> {
@@ -13,6 +14,7 @@ export class TableComponent<T> {
   @Input({ required: true }) columns!: Signal<TableColumn<T>[]>;
   @Input() paginable = false;
   @Input() pagination?: { page: number; totalPages: number };
+  @Input() loading = false;
   @Output() pageChange = new EventEmitter<number>();
 
   @Output() sortChange = new EventEmitter<{ key: string, direction: 'asc' | 'desc' }>();

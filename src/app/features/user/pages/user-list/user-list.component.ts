@@ -7,7 +7,7 @@ import { UserService } from '@core/services/user/user.service';
 import { TableColumn } from '@shared/components/table/models/table-column.model';
 import { TableComponent } from '@shared/components/table/table.component';
 import { BooleanToStringHelper, DateHelper } from '@shared/helpers';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-list',
@@ -40,18 +40,18 @@ export class UserListComponent {
       sortable: true,
     },
     {
-      key: 'created_at',
+      key: 'createdAt',
       label: 'Criado em',
-      value: (user: UserModel) => DateHelper.format(user.created_at),
+      value: (user: UserModel) => DateHelper.format(user.createdAt),
       sortable: true,
     },
     {
-      key: 'updated_at',
+      key: 'updatedAt',
       label: 'Atualizado em',
-      value: (user: UserModel) => DateHelper.format(user.updated_at),
+      value: (user: UserModel) => DateHelper.format(user.updatedAt),
     },
     {
-      key: 'is_active',
+      key: 'isActive',
       label: 'Ativo',
       type: 'checkbox',
       onChange: (user: UserModel, checked: boolean) => this.toggleUserStatus(user, checked),
@@ -84,11 +84,12 @@ export class UserListComponent {
 
   filter = {
     search: '' as string | null,
-    sort: '' as string | null,
-    order: 'asc' as 'asc' | 'desc' | null
+    sort: 'isActive' as string,
+    order: 'desc' as 'asc' | 'desc'
   };
 
   users = signal<UserModel[]>([]);
+  loading = signal<boolean>(false);
 
   ngOnInit() {
     this.loadUsers();
@@ -104,6 +105,8 @@ export class UserListComponent {
   }
 
   private loadUsers() {
+    this.loading.set(true);
+
     const request: PaginationRequestModel = {
       page: this.pagination().page,
       limit: this.pagination().limit,
@@ -115,6 +118,7 @@ export class UserListComponent {
     this
       .userService
       .getAll(request)
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (response) => {
           if (response) {
