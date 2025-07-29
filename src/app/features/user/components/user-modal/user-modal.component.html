@@ -27,12 +27,30 @@
 
       <div class="user-modal__form__group">
         <div class="sol-input-group">
-          <input type="text" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
+          <input type="password" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
+
+          @if (form.get('password')?.errors && form.get('password')?.touched) {
+          <div class="sol-input-group__error">
+            <p class="sol-error-message">Senha é obrigatória</p>
+          </div>
+          }
         </div>
         <div class="sol-input-group">
-          <input type="text" id="confirm-password" class="sol-input primary" formControlName="confirmPassword" placeholder="Confirmar senha" />
+          <input type="password" id="confirm-password" class="sol-input primary" formControlName="confirmPassword" placeholder="Confirmar senha" />
+
+          @if (form.get('confirmPassword')?.errors && form.get('confirmPassword')?.touched) {
+          <div class="sol-input-group__error">
+            <p class="sol-error-message">Confirmação de senha é obrigatória</p>
+          </div>
+          }
         </div>
       </div>
+
+      @if (form.errors?.['passwordMismatch'] && form.touched) {
+      <div class="sol-input-group__error">
+        <p class="sol-error-message">As senhas não coincidem</p>
+      </div>
+      }
     </form>
   </div>
   <div modal-footer class="modal-footer">

@@ -3,6 +3,7 @@ import { Component, inject, Input } from '@angular/core';
 import { UserModel } from '@core/models/user.model';
 import { ModalComponent } from '@shared/modules/modal';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { passwordConfirmValidatorSimple } from '@shared/validators';
 
 @Component({
   selector: 'app-user-modal',
@@ -22,5 +23,7 @@ export class UserModalComponent {
     phone: ['', Validators.required],
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required]
+  }, {
+    validators: passwordConfirmValidatorSimple()
   });
 }
