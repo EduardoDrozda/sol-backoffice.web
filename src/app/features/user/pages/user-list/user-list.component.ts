@@ -22,6 +22,7 @@ export class UserListComponent {
   private readonly userService = inject(UserService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+
   private readonly modalService = inject(ModalService);
   private readonly toastService = inject(ToastService);
 
@@ -126,9 +127,9 @@ export class UserListComponent {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (response) => {
-          if (response) {
-            this.pagination.set(response);
-            this.users.set(response.data);
+          if (response && response.result) {
+            this.pagination.set(response.result);
+            this.users.set(response.result.data);
           }
         },
         error: (error) => {

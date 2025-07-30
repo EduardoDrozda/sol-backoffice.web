@@ -15,8 +15,8 @@ export class HttpService {
     return this.http.post<BaseResponse<O>>(`${this.apiUrl}${url}`, body);
   }
 
-  get<O>(url: string): Observable<O> {
-    return this.http.get<O>(`${this.apiUrl}${url}`);
+  get<O>(url: string): Observable<BaseResponse<O>> {
+    return this.http.get<BaseResponse<O>>(`${this.apiUrl}${url}`);
   }
 
   patch<I, O>(url: string, body: I): Observable<BaseResponse<O>> {

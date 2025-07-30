@@ -55,6 +55,6 @@
   </div>
   <div modal-footer class="modal-footer">
     <button class="sol-button">Cancelar</button>
-    <button class="sol-button accent" [disabled]="form.invalid">Salvar</button>
+    <button class="sol-button accent" (click)="onSubmit()">Salvar</button>
   </div>
 </app-modal>

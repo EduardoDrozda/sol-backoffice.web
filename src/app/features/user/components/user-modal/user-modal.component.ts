@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { UserModel } from '@core/models/user.model';
 import { ModalComponent } from '@shared/modules/modal';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordConfirmValidatorSimple } from '@shared/validators';
+import { RoleService } from '@core/services/role';
+import { RoleModel } from '@core/models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-modal',
@@ -11,11 +14,14 @@ import { passwordConfirmValidatorSimple } from '@shared/validators';
   templateUrl: './user-modal.component.html',
   styleUrl: './user-modal.component.scss'
 })
-export class UserModalComponent {
+export class UserModalComponent implements OnInit {
   @Input({ required: true }) title!: string;
   @Input() user: UserModel | null = null;
 
+  private readonly roleService = inject(RoleService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
+  roles: RoleModel[] = [];
 
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
@@ -26,4 +32,24 @@ export class UserModalComponent {
   }, {
     validators: passwordConfirmValidatorSimple()
   });
+
+  ngOnInit() {
+    this.roleService.getAllRoles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (roles) => {
+        this.roles = roles;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    console.log(this.form.value);
+  }
 }

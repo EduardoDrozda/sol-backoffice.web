@@ -10,8 +10,7 @@ import { map } from 'rxjs';
 })
 export class UserService {
   private readonly http = inject(HttpService);
-  private readonly loggedUser = signal<UserModel | null>(null);
-  private baseUrl = '/v1/users';
+  private readonly baseUrl = '/v1/users';
 
   getAll(request: PaginationRequestModel) {
     const queryParams = new URLSearchParams();
@@ -30,9 +29,9 @@ export class UserService {
 
     return this
       .http
-      .get<BaseResponse<PaginationResponseModel<UserModel>>>(`${this.baseUrl}?${queryParams.toString()}`)
+      .get<PaginationResponseModel<UserModel>>(`${this.baseUrl}?${queryParams.toString()}`)
       .pipe(
-        map((response) => response.result)
+        map((response) => response)
       );
   }
 
