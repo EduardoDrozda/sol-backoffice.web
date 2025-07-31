@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal, effect } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { PaginationRequestModel, PaginationResponseModel } from '@core/models/pagination.model';
@@ -22,13 +22,12 @@ export class UserListComponent {
   private readonly userService = inject(UserService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
-
   private readonly modalService = inject(ModalService);
   private readonly toastService = inject(ToastService);
 
-  form = this.formBuilder.group({ search: [''] });
+  readonly form = this.formBuilder.group({ search: [''] });
 
-  columns = signal<TableColumn<UserModel>[]>([
+  readonly columns = signal<TableColumn<UserModel>[]>([
     {
       key: 'name',
       label: 'Nome',
@@ -80,7 +79,7 @@ export class UserListComponent {
     }
   ]);
 
-  pagination = signal<PaginationResponseModel<UserModel>>({
+  readonly pagination = signal<PaginationResponseModel<UserModel>>({
     data: [],
     total: 0,
     page: 1,
@@ -88,41 +87,43 @@ export class UserListComponent {
     totalPages: 0,
   });
 
-  filter = {
+  readonly filter = signal({
     search: '' as string | null,
     sort: 'isActive' as string,
     order: 'desc' as 'asc' | 'desc'
-  };
+  });
 
-  users = signal<UserModel[]>([]);
-  loading = signal<boolean>(false);
+  readonly users = signal<UserModel[]>([]);
+  readonly loading = signal<boolean>(false);
 
-  ngOnInit() {
+  constructor() {
+    this.initializeSearchEffect();
     this.loadUsers();
+  }
 
+  private initializeSearchEffect(): void {
     this.form.get('search')?.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe((value) => {
-      this.filter.search = value;
+      this.filter.update(f => ({ ...f, search: value }));
       this.loadUsers();
     });
   }
 
-  private loadUsers() {
+  private loadUsers(): void {
     this.loading.set(true);
 
     const request: PaginationRequestModel = {
       page: this.pagination().page,
       limit: this.pagination().limit,
-      search: this.filter.search,
-      sort: this.filter.sort,
-      order: this.filter.order
+      search: this.filter().search,
+      sort: this.filter().sort,
+      order: this.filter().order
     };
 
-    this
-      .userService
+    this.userService
       .getAll(request)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
@@ -133,59 +134,55 @@ export class UserListComponent {
           }
         },
         error: (error) => {
-          console.error(error);
+          this.toastService.showError('Erro ao carregar usuários');
         }
       });
   }
 
-  prevPage() {
+  prevPage(): void {
     if (this.pagination().page > 1) {
       this.pagination.update(p => ({ ...p, page: p.page - 1 }));
       this.loadUsers();
     }
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.pagination().page < this.pagination().totalPages) {
       this.pagination.update(p => ({ ...p, page: p.page + 1 }));
       this.loadUsers();
     }
   }
 
-  onPageChange(page: number) {
+  onPageChange(page: number): void {
     this.pagination.update(p => ({ ...p, page }));
     this.loadUsers();
   }
 
-  onSortChange(sort: { key: string, direction: 'asc' | 'desc' }) {
-    this.filter.sort = sort.key;
-    this.filter.order = sort.direction;
+  onSortChange(sort: { key: string, direction: 'asc' | 'desc' }): void {
+    this.filter.update(f => ({ ...f, sort: sort.key, order: sort.direction }));
     this.loadUsers();
   }
 
-  private toggleUserStatus(user: UserModel, checked: boolean) {
-    this
-      .userService
+  private toggleUserStatus(user: UserModel, checked: boolean): void {
+    this.userService
       .toggleStatus(user.id, checked)
       .subscribe({
-        next: (response) => {
+        next: () => {
           const message = checked ? 'Usuário ativado com sucesso' : 'Usuário desativado com sucesso';
           this.toastService.showSuccess(message);
         }
       });
   }
 
-  private resendConfirmationEmail(user: UserModel) {
-    console.log('Reenviar email de confirmação para', user);
-    // Aqui você pode chamar o serviço correspondente
+  private resendConfirmationEmail(user: UserModel): void {
+    // TODO: Implementar reenvio de email de confirmação
   }
 
-  private resetPassword(user: UserModel) {
-    console.log('Resetar senha para', user);
-    // Aqui você pode chamar o serviço correspondente
+  private resetPassword(user: UserModel): void {
+    // TODO: Implementar reset de senha
   }
 
-  openUserModal(user?: UserModel) {
+  openUserModal(user?: UserModel): void {
     const modalRef = this.modalService.open<UserModalComponent>(UserModalComponent, {
       data: {
         title: user ? 'Editar usuário' : 'Criar novo usuário',
@@ -196,11 +193,8 @@ export class UserListComponent {
 
     modalRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Modal fechado com resultado:', result);
-      } else {
-        console.log('Modal fechado sem resultado');
+        // TODO: Implementar lógica quando modal é fechado com resultado
       }
     });
   }
-
 }

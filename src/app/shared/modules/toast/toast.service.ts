@@ -48,9 +48,10 @@ export class ToastService {
       environmentInjector: this.envInjector,
     });
 
-    toastRef.instance.title = title;
-    toastRef.instance.message = message;
-    toastRef.instance.type = type;
+    // Definir os inputs usando a nova API
+    toastRef.setInput('title', title);
+    toastRef.setInput('message', message);
+    toastRef.setInput('type', type);
 
     this.appRef.attachView(toastRef.hostView);
     const domElem = (toastRef.hostView as any).rootNodes[0] as HTMLElement;

@@ -1,16 +1,15 @@
-import { Component, Input, Output, EventEmitter, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-modal',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div class="modal-overlay" (click)="onBackdropClick($event)">
       <div class="modal-container" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h2 class="modal-title">{{ title }}</h2>
+          <h2 class="modal-title">{{ title() }}</h2>
           <button
             type="button"
             class="modal-close"
@@ -25,7 +24,7 @@ import { ModalService } from './modal.service';
           <ng-content></ng-content>
         </div>
 
-        <div class="modal-footer" *ngIf="showFooter">
+        <div class="modal-footer" *ngIf="showFooter()">
           <ng-content select="[modal-footer]"></ng-content>
         </div>
       </div>
@@ -33,22 +32,22 @@ import { ModalService } from './modal.service';
   `
 })
 export class ModalComponent {
-  @Input() title: string = '';
-  @Input() showFooter: boolean = true;
-  @Input() closeOnBackdrop: boolean = true;
-  @Input() closeOnEscape: boolean = true;
+  readonly title = input<string>('');
+  readonly showFooter = input<boolean>(true);
+  readonly closeOnBackdrop = input<boolean>(true);
+  readonly closeOnEscape = input<boolean>(true);
 
   private readonly modalService = inject(ModalService);
 
   @HostListener('document:keydown.escape')
-  onEscapeKey() {
-    if (this.closeOnEscape) {
+  onEscapeKey(): void {
+    if (this.closeOnEscape()) {
       this.close();
     }
   }
 
   onBackdropClick(event: Event): void {
-    if (this.closeOnBackdrop && event.target === event.currentTarget) {
+    if (this.closeOnBackdrop() && event.target === event.currentTarget) {
       this.close();
     }
   }

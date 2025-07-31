@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    @if (loading) {
+    @if (loading()) {
     <tr>
       <td [attr.colspan]="columns().length" class="sol-table-loading">
         <div class="sol-table-loading-wrapper">
@@ -86,26 +86,26 @@
     }
   </tbody>
 </table>
-@if (paginable && pagination) {
+@if (paginable() && pagination()) {
 <div class="sol-table-pagination-row right">
-  <button (click)="prevPage('first')" class="sol-table-pagination-btn icon-btn" [disabled]="pagination.page === 1">
+  <button (click)="prevPage('first')" class="sol-table-pagination-btn icon-btn" [disabled]="pagination()!.page === 1">
     <i class="fa fa-angle-double-left"></i>
   </button>
-  <button (click)="prevPage()" class="sol-table-pagination-btn icon-btn" [disabled]="pagination.page === 1">
+  <button (click)="prevPage()" class="sol-table-pagination-btn icon-btn" [disabled]="pagination()!.page === 1">
     <i class="fa fa-angle-left"></i>
   </button>
   <ng-container *ngFor="let page of getPagesArray()">
     <button (click)="goToPage(page)" class="sol-table-pagination-btn page-btn"
-      [class.active]="pagination.page === page">
+      [class.active]="pagination()!.page === page">
       {{ page }}
     </button>
   </ng-container>
   <button (click)="nextPage()" class="sol-table-pagination-btn icon-btn"
-    [disabled]="pagination.page === pagination.totalPages">
+    [disabled]="pagination()!.page === pagination()!.totalPages">
     <i class="fa fa-angle-right"></i>
   </button>
   <button (click)="nextPage('last')" class="sol-table-pagination-btn icon-btn"
-    [disabled]="pagination.page === pagination.totalPages">
+    [disabled]="pagination()!.page === pagination()!.totalPages">
     <i class="fa fa-angle-double-right"></i>
   </button>
 </div>

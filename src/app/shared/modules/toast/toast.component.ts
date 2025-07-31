@@ -1,20 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-toast',
   imports: [CommonModule],
   template: `
     <div
       class="toast"
-      [class.success]="type === 'success'"
-      [class.error]="type === 'error'"
-      [class.info]="type === 'info'"
-      [class.warning]="type === 'warning'"
+      [class.success]="type() === 'success'"
+      [class.error]="type() === 'error'"
+      [class.info]="type() === 'info'"
+      [class.warning]="type() === 'warning'"
     >
-      <h3 class="toast-title">{{ title }}</h3>
-      <p class="toast-message">{{ message }}</p>
+      <h3 class="toast-title">{{ title() }}</h3>
+      <p class="toast-message">{{ message() }}</p>
     </div>
   `,
   styles: [`
@@ -59,7 +58,7 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class ToastComponent {
-  @Input({ required: true }) message!: string;
-  @Input() type: 'success' | 'error' | 'info' | 'warning' = 'info';
-  @Input() title: string = 'Atenção';
+  readonly message = input.required<string>();
+  readonly type = input<'success' | 'error' | 'info' | 'warning'>('info');
+  readonly title = input<string>('Atenção');
 }

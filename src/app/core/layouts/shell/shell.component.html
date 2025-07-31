@@ -6,7 +6,7 @@
   </header>
 
   <div class="shell-layout__container">
-    <aside [class]="sidebarClasses">
+    <aside [class]="sidebarClasses()">
 
       <div class="sidebar-header">
         <span class="sidebar-title">Menu</span>
@@ -29,7 +29,7 @@
       </nav>
     </aside>
 
-    <div class="sidebar-overlay" [class.overlay-visible]="isSidebarOpen && isMobile" (click)="closeSidebar()"></div>
+    <div class="sidebar-overlay" [class.overlay-visible]="isSidebarOpen() && isMobile()" (click)="closeSidebar()"></div>
 
     <section class="shell-layout__content">
       <router-outlet />

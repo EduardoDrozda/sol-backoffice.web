@@ -1,20 +1,25 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { ToastService } from '@shared/modules/toast';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PwaService {
-  private updateAvailable$ = new BehaviorSubject<boolean>(false);
-  private isOnline$ = new BehaviorSubject<boolean>(navigator.onLine);
-  private toastService = inject(ToastService);
+  private readonly swUpdate = inject(SwUpdate);
+  private readonly swPush = inject(SwPush);
+  private readonly toastService = inject(ToastService);
 
-  constructor(
-    private swUpdate: SwUpdate,
-    private swPush: SwPush
-  ) {
+  // Signals para estado do PWA
+  private readonly _updateAvailable = signal(false);
+  private readonly _isOnline = signal(navigator.onLine);
+
+  // Observables derivados dos signals (para compatibilidade)
+  readonly updateAvailable$ = toObservable(this._updateAvailable);
+  readonly isOnline$ = toObservable(this._isOnline);
+
+  constructor() {
     this.initializeServiceWorker();
     this.initializeOnlineStatus();
   }
@@ -23,7 +28,7 @@ export class PwaService {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.subscribe(event => {
         if (event.type === 'VERSION_READY') {
-          this.updateAvailable$.next(true);
+          this._updateAvailable.set(true);
           this.toastService.showInfo('Atualização disponível');
         }
       });
@@ -36,16 +41,20 @@ export class PwaService {
 
   private initializeOnlineStatus(): void {
     window.addEventListener('online', () => {
-      this.isOnline$.next(true);
+      this._isOnline.set(true);
     });
 
     window.addEventListener('offline', () => {
-      this.isOnline$.next(false);
+      this._isOnline.set(false);
     });
   }
 
-  get updateAvailable(): Observable<boolean> {
-    return this.updateAvailable$.asObservable();
+  get updateAvailable() {
+    return this._updateAvailable.asReadonly();
+  }
+
+  get isOnline() {
+    return this._isOnline.asReadonly();
   }
 
   async applyUpdate(): Promise<void> {
@@ -53,10 +62,6 @@ export class PwaService {
       await this.swUpdate.activateUpdate();
       window.location.reload();
     }
-  }
-
-  get isOnline(): Observable<boolean> {
-    return this.isOnline$.asObservable();
   }
 
   async requestNotificationPermission(): Promise<boolean> {
@@ -112,5 +117,4 @@ export class PwaService {
   isStandalone(): boolean {
     return window.matchMedia('(display-mode: standalone)').matches;
   }
-
 }

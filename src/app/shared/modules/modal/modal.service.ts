@@ -6,9 +6,12 @@ import {
   ApplicationRef,
   EmbeddedViewRef,
   createComponent,
+  inject,
+  signal,
 } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 export interface ModalConfig {
   data?: any;
@@ -28,13 +31,12 @@ export interface ModalRef {
   providedIn: 'root'
 })
 export class ModalService {
-  private modalRef: ComponentRef<any> | null = null;
-  private resultSubject = new BehaviorSubject<any>(null);
+  private readonly injector = inject(Injector);
+  private readonly appRef = inject(ApplicationRef);
 
-  constructor(
-    private injector: Injector,
-    private appRef: ApplicationRef
-  ) { }
+  private modalRef: ComponentRef<any> | null = null;
+  private readonly _result = signal<any>(null);
+  readonly result$ = toObservable(this._result);
 
   open<T = any>(
     component: Type<T>,
@@ -62,7 +64,7 @@ export class ModalService {
 
       return {
         close: (result?: any) => this.close(result),
-        afterClosed: () => this.resultSubject.asObservable()
+        afterClosed: () => this.result$
       };
     } catch (error) {
       throw error;
@@ -105,7 +107,7 @@ export class ModalService {
         this.modalRef = null;
       }
 
-      this.resultSubject.next(result);
+      this._result.set(result);
     }, 300);
   }
 }

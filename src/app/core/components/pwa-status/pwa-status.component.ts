@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PwaService } from '@core/services/pwa/pwa.service';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-pwa-status',
@@ -9,61 +9,78 @@ import { Subscription } from 'rxjs';
   templateUrl: './pwa-status.component.html',
   styleUrl: './pwa-status.component.scss'
 })
-export class PwaStatusComponent implements OnInit, OnDestroy {
-  showInstallPrompt = false;
-  updateAvailable = false;
-  isOnline = true;
-  isPWAInstalled = false;
+export class PwaStatusComponent {
+  private readonly pwaService = inject(PwaService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  private subscriptions: Subscription[] = [];
+  // Signals para estado do PWA
+  readonly showInstallPrompt = signal(false);
+  readonly updateAvailable = signal(false);
+  readonly isOnline = signal(navigator.onLine);
+  readonly isPWAInstalled = signal(false);
 
-  constructor(private pwaService: PwaService) {}
-
-  ngOnInit(): void {
-    this.subscriptions.push(
-
-      this.pwaService.updateAvailable.subscribe(available => {
-        this.updateAvailable = available;
-      }),
-
-      this.pwaService.isOnline.subscribe(online => {
-        this.isOnline = online;
-      })
-    );
-
-    this.setupInstallPrompt();
+  constructor() {
+    this.initializePWAStatus();
+    this.initializeServiceWorkerListeners();
+    this.initializeInstallPrompt();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+  private initializePWAStatus(): void {
+    // Verificar status inicial do PWA
+    this.pwaService.isReallyInstalled().then((isInstalled) => {
+      this.isPWAInstalled.set(isInstalled);
+    });
+
+    // Escutar mudanças no display mode
+    window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
+      this.isPWAInstalled.set(e.matches);
+    });
   }
 
-  private setupInstallPrompt(): void {
+  private initializeServiceWorkerListeners(): void {
+    // Escutar atualizações disponíveis
+    this.pwaService.updateAvailable$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(available => {
+        this.updateAvailable.set(available);
+      });
+
+    // Escutar status online/offline
+    this.pwaService.isOnline$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(online => {
+        this.isOnline.set(online);
+      });
+  }
+
+  private initializeInstallPrompt(): void {
+    // Escutar o evento beforeinstallprompt
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();
       (window as any).deferredPrompt = e;
 
       this.pwaService.isReallyInstalled().then((isInstalled) => {
         if (!isInstalled) {
-          this.showInstallPrompt = true;
-          this.isPWAInstalled = false;
+          this.showInstallPrompt.set(true);
+          this.isPWAInstalled.set(false);
         }
       });
     });
 
+    // Escutar quando o PWA é instalado
     window.addEventListener('appinstalled', () => {
-      this.showInstallPrompt = false;
-      this.isPWAInstalled = true;
+      this.showInstallPrompt.set(false);
+      this.isPWAInstalled.set(true);
     });
   }
 
   async installPWA(): Promise<void> {
     await this.pwaService.installPWA();
-    this.showInstallPrompt = false;
+    this.showInstallPrompt.set(false);
   }
 
   dismissInstallPrompt(): void {
-    this.showInstallPrompt = false;
+    this.showInstallPrompt.set(false);
   }
 
   async applyUpdate(): Promise<void> {

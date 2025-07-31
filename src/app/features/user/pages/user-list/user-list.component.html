@@ -19,8 +19,8 @@
   <div class="page-content">
     <div class="user-list__content">
     <sol-table
-      [columns]="columns"
-      [data]="users"
+      [columns]="columns()"
+      [data]="users()"
       [loading]="loading()"
       [paginable]="true"
       [pagination]="pagination()"

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, signal, computed } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { PwaStatusComponent } from '@core/components/pwa-status/pwa-status.component';
 import { CommonModule } from '@angular/common';
@@ -11,10 +11,10 @@ import { RouteOptions } from '@core/models/route-options.model';
   styleUrl: './shell.component.scss'
 })
 export class ShellComponent {
-  isSidebarOpen = true;
-  isMobile = false;
+  readonly isSidebarOpen = signal(true);
+  readonly isMobile = signal(false);
 
-  routes: RouteOptions[] = [
+  readonly routes: RouteOptions[] = [
     {
       title: 'Dashboard',
       icon: 'fa-solid fa-gauge-high',
@@ -27,6 +27,13 @@ export class ShellComponent {
     }
   ];
 
+  readonly sidebarClasses = computed(() => {
+    const classes = ['shell-layout__sidebar'];
+    const sidebarClass = this.isSidebarOpen() ? 'sidebar-open' : 'sidebar-collapsed';
+    classes.push(sidebarClass);
+    return classes.join(' ');
+  });
+
   constructor() {
     this.checkScreenSize();
   }
@@ -37,30 +44,23 @@ export class ShellComponent {
   }
 
   private checkScreenSize(): void {
-    const wasMobile = this.isMobile;
-    this.isMobile = window.innerWidth < 1024;
+    const wasMobile = this.isMobile();
+    const newIsMobile = window.innerWidth < 1024;
+    this.isMobile.set(newIsMobile);
 
-    if (!wasMobile && this.isMobile) {
-      this.isSidebarOpen = false;
+    if (!wasMobile && newIsMobile) {
+      this.isSidebarOpen.set(false);
     }
-    else if (wasMobile && !this.isMobile) {
-      this.isSidebarOpen = true;
+    else if (wasMobile && !newIsMobile) {
+      this.isSidebarOpen.set(true);
     }
   }
 
   toggleSidebar(): void {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    this.isSidebarOpen.update(open => !open);
   }
 
   closeSidebar(): void {
-    this.isSidebarOpen = false;
-  }
-
-  get sidebarClasses(): string {
-    const classes = ['shell-layout__sidebar'];
-
-    const sidebarClass = this.isSidebarOpen ? 'sidebar-open' : 'sidebar-collapsed';
-    classes.push(sidebarClass);
-    return classes.join(' ');
+    this.isSidebarOpen.set(false);
   }
 }
