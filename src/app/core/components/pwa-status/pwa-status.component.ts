@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pwa-status',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './pwa-status.component.html',
   styleUrl: './pwa-status.component.scss'
@@ -32,14 +31,7 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.isPWAInstalled = this.pwaService.isPWAInstalled();
     this.setupInstallPrompt();
-
-    if (!this.isPWAInstalled) {
-      setTimeout(() => {
-        this.showInstallPrompt = true;
-      }, 3000);
-    }
   }
 
   ngOnDestroy(): void {
@@ -47,10 +39,16 @@ export class PwaStatusComponent implements OnInit, OnDestroy {
   }
 
   private setupInstallPrompt(): void {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();
       (window as any).deferredPrompt = e;
-      this.showInstallPrompt = true;
+
+      this.pwaService.isReallyInstalled().then((isInstalled) => {
+        if (!isInstalled) {
+          this.showInstallPrompt = true;
+          this.isPWAInstalled = false;
+        }
+      });
     });
 
     window.addEventListener('appinstalled', () => {

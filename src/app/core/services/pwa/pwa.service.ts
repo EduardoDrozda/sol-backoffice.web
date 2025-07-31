@@ -96,12 +96,21 @@ export class PwaService {
     }
   }
 
+  async isReallyInstalled(): Promise<boolean> {
+    if ('getInstalledRelatedApps' in navigator) {
+      const apps = await (navigator as any).getInstalledRelatedApps();
+      return apps.length > 0;
+    }
+
+    return this.isPWAInstalled();
+  }
+
   isPWAInstalled(): boolean {
-    return window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true;
+    return this.isStandalone() || (window.navigator as any).standalone === true;
   }
 
   isStandalone(): boolean {
     return window.matchMedia('(display-mode: standalone)').matches;
   }
+
 }
