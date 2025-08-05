@@ -176,7 +176,6 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
       color: var(--color-text-white);
-      transform: translateX(2px);
 
       i {
         color: var(--color-text-white);
@@ -204,6 +203,143 @@
         top: 0;
         bottom: 0;
         width: 3px;
+        background-color: var(--color-text-white);
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+}
+
+// Estilos para menus com submenus
+.nav-item-with-children {
+  width: 100%;
+}
+
+.nav-link-parent {
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: var(--spacing-3) var(--spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-weight: var(--font-weight-medium);
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  outline: none;
+  border-radius: var(--spacing-2);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+
+  i {
+    width: 20px;
+    text-align: center;
+    font-size: var(--font-size-md);
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  span {
+    flex: 1;
+    text-align: left;
+  }
+
+  .submenu-arrow {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.6);
+    width: 20px;
+    text-align: center;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-white);
+    transform: translateX(2px);
+
+    i {
+      color: var(--color-text-white);
+      transform: scale(1.05);
+    }
+
+    .submenu-arrow {
+      color: var(--color-text-white);
+    }
+  }
+
+  &:active {
+    transform: translateX(1px);
+  }
+}
+
+.submenu-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 var(--spacing-2) var(--spacing-2);
+  margin: 0 var(--spacing-2);
+
+  &.expanded {
+    max-height: 500px;
+  }
+}
+
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-2) 0;
+
+  li {
+    margin-bottom: 0;
+  }
+
+  .nav-link-child {
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: var(--spacing-1);
+    transition: none;
+    padding: var(--spacing-4);
+    margin-left: none;
+    position: relative;
+
+    i {
+      font-size: var(--font-size-sm);
+      width: 16px;
+    }
+
+    &:hover {
+      background-color: var(--color-accent);
+      color: var(--color-text-white);
+      margin-left: none;
+
+      i {
+        color: var(--color-text-white);
+      }
+    }
+
+    &.active {
+      background-color: var(--color-accent);
+      color: var(--color-text-white);
+      font-weight: var(--font-weight-semibold);
+
+      i {
+        color: var(--color-text-white);
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
         background-color: var(--color-text-white);
         border-radius: 0 2px 2px 0;
       }

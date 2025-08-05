@@ -6,6 +6,7 @@ import { RouteOptions } from '@core/models/route-options.model';
 
 @Component({
   selector: 'app-shell',
+  standalone: true,
   imports: [RouterOutlet, PwaStatusComponent, CommonModule, RouterLinkActive, RouterLink],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss'
@@ -13,6 +14,7 @@ import { RouteOptions } from '@core/models/route-options.model';
 export class ShellComponent {
   readonly isSidebarOpen = signal(true);
   readonly isMobile = signal(false);
+  readonly expandedMenus = signal<Set<string>>(new Set());
 
   readonly routes: RouteOptions[] = [
     {
@@ -24,6 +26,22 @@ export class ShellComponent {
       title: 'Usuários',
       icon: 'fa-solid fa-users',
       path: '/users'
+    },
+    {
+      title: 'Configurações',
+      icon: 'fa-solid fa-cog',
+      children: [
+        {
+          title: 'Cargos',
+          icon: 'fa-solid fa-user-tie',
+          path: '/roles'
+        },
+        {
+          title: 'Permissões',
+          icon: 'fa-solid fa-shield-halved',
+          path: '/permissions'
+        }
+      ]
     }
   ];
 
@@ -33,6 +51,8 @@ export class ShellComponent {
     classes.push(sidebarClass);
     return classes.join(' ');
   });
+
+  readonly isSubmenuExpanded = computed(() => this.expandedMenus().size > 0);
 
   constructor() {
     this.checkScreenSize();
@@ -50,8 +70,7 @@ export class ShellComponent {
 
     if (!wasMobile && newIsMobile) {
       this.isSidebarOpen.set(false);
-    }
-    else if (wasMobile && !newIsMobile) {
+    } else if (wasMobile && !newIsMobile) {
       this.isSidebarOpen.set(true);
     }
   }
@@ -62,5 +81,18 @@ export class ShellComponent {
 
   closeSidebar(): void {
     this.isSidebarOpen.set(false);
+  }
+
+  toggleSubmenu(menuTitle: string): void {
+    const currentExpanded = this.expandedMenus();
+    const newExpanded = new Set(currentExpanded);
+
+    if (newExpanded.has(menuTitle)) {
+      newExpanded.delete(menuTitle);
+    } else {
+      newExpanded.add(menuTitle);
+    }
+
+    this.expandedMenus.set(newExpanded);
   }
 }

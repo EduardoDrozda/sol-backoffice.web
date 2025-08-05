@@ -7,7 +7,6 @@
 
   <div class="shell-layout__container">
     <aside [class]="sidebarClasses()">
-
       <div class="sidebar-header">
         <span class="sidebar-title">Menu</span>
         <button class="sidebar-close" (click)="closeSidebar()" aria-label="Close sidebar">
@@ -17,19 +16,56 @@
 
       <nav class="sidebar-nav">
         <ul>
-          @for (route of routes; track route.path) {
+          @for (route of routes; track route.title) {
             <li>
-              <a class="nav-link" routerLinkActive="active" [routerLink]="route.path">
-                <i [class]="route.icon"></i>
-                <span>{{ route.title }}</span>
-              </a>
+              @if (route.children?.length) {
+                <div class="nav-item-with-children">
+                  <button
+                    class="nav-link nav-link-parent"
+                    (click)="toggleSubmenu(route.title)"
+                    [class.expanded]="expandedMenus().has(route.title)"
+                  >
+                    <i [class]="route.icon"></i>
+                    <span>{{ route.title }}</span>
+                    <i class="fa-solid"
+                       [class.fa-chevron-down]="expandedMenus().has(route.title)"
+                       [class.fa-chevron-right]="!expandedMenus().has(route.title)"
+                       [class.active]="expandedMenus().has(route.title)"></i>
+                  </button>
+
+                  <div class="submenu-container"
+                       [class.expanded]="expandedMenus().has(route.title)">
+                    <ul class="submenu">
+                      @for (child of route.children; track child.title) {
+                        <li>
+                          <a class="nav-link nav-link-child"
+                             routerLinkActive="active"
+                             [routerLink]="child.path">
+                            <i [class]="child.icon"></i>
+                            <span>{{ child.title }}</span>
+                          </a>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </div>
+              } @else {
+                <a class="nav-link" routerLinkActive="active" [routerLink]="route.path">
+                  <i [class]="route.icon"></i>
+                  <span>{{ route.title }}</span>
+                </a>
+              }
             </li>
           }
         </ul>
       </nav>
     </aside>
 
-    <div class="sidebar-overlay" [class.overlay-visible]="isSidebarOpen() && isMobile()" (click)="closeSidebar()"></div>
+    <div
+      class="sidebar-overlay"
+      [class.overlay-visible]="isSidebarOpen() && isMobile()"
+      (click)="closeSidebar()">
+    </div>
 
     <section class="shell-layout__content">
       <router-outlet />
