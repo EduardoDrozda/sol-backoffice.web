@@ -51,7 +51,6 @@ export class UserModalComponent {
       .subscribe({
         next: (roles) => {
           this.roles.set(roles);
-          // Converter roles para opções do select
           const options: SelectOption[] = roles.map(role => ({
             value: role.id,
             label: role.name
