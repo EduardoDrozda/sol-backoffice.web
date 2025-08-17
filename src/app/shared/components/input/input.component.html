@@ -1,0 +1,57 @@
+<div class="sol-input-group" [class.error]="error">
+  @if (label) {
+    <label [for]="id" class="sol-input-group__label">
+      {{ label }}
+      @if (required) {
+        <span class="sol-input-group__required">*</span>
+      }
+    </label>
+  }
+
+  <div class="sol-input-wrapper" [class.has-prefix]="Icon" [class.has-password-toggle]="type === 'password'">
+    @if (Icon) {
+      <i class="sol-input-prefix" [class]="Icon"></i>
+    }
+    <input
+      [type]="getInputType()"
+      [id]="id"
+      [name]="name"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [attr.maxlength]="maxlength"
+      [attr.minlength]="minlength"
+      [attr.pattern]="pattern"
+      [autocomplete]="autocomplete"
+      [value]="value"
+      [mask]="mask"
+      [showMaskTyped]="showMaskTyped"
+      [dropSpecialCharacters]="dropSpecialCharacters"
+      (input)="onInput($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      class="sol-input"
+      [class.primary]="!error"
+      [class.error]="error"
+      [class.disabled]="disabled"
+      [class.readonly]="readonly"
+    />
+    @if (type === 'password') {
+      <button
+        type="button"
+        class="sol-input-password-toggle"
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+        tabindex="0"
+      >
+        <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+      </button>
+    }
+  </div>
+
+  @if (error) {
+    <div class="sol-input-group__error">
+      <p class="sol-error-message">Campo obrigatório</p>
+    </div>
+  }
+</div>

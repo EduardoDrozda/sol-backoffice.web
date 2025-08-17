@@ -192,8 +192,18 @@ export class UserListComponent {
     });
 
     modalRef.afterClosed().subscribe((result) => {
-      if (result) {
-        // TODO: Implementar lógica quando modal é fechado com resultado
+      if (!result) return;
+
+      if (result && !result?.id) {
+        this.createUser(result);
+      }
+    });
+  }
+
+  private createUser(user: UserModel): void {
+    this.userService.create(user).subscribe({
+      next: () => {
+        this.toastService.showSuccess('Usuário criado com sucesso');
       }
     });
   }

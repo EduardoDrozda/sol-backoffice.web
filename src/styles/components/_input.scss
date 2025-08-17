@@ -8,7 +8,7 @@
   border: 1px solid var(--color-border);
   border-radius: 4px;
   background-color: white;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &::placeholder {
@@ -24,18 +24,18 @@
 
   &:disabled {
     background-color: var(--color-surface-alt);
-    color: var(--text-disabled);
+    color: var(--color-text-disabled);
     cursor: not-allowed;
   }
 
   &.primary {
-    background-color: var(--color-primary-surface);
-    color: var(--color-primary-text);
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
   }
 
   &.error {
-    background-color: var(--color-error-surface);
-    color: var(--color-error-text);
+    background-color: var(--color-error-light);
+    color: var(--color-error);
   }
 }
 

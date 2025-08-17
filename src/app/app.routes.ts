@@ -3,6 +3,7 @@ import { authGuard } from '@core/guards/auth/auth.guard';
 import { authRoutes } from '@features/auth/auth.routes';
 import { dashboardRoutes } from '@features/dashboard/dashboard.routes';
 import { userRoutes } from '@features/user/user.routes';
+import { rolesPermissionsRoutes } from '@features/roles-permissions/roles-permissions.routes';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -16,7 +17,8 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       ...dashboardRoutes,
-      ...userRoutes
+      ...userRoutes,
+      ...rolesPermissionsRoutes
     ],
     canActivate: [authGuard]
   }

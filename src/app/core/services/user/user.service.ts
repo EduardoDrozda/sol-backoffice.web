@@ -43,4 +43,13 @@ export class UserService {
         map((response) => response.result)
       );
   }
+
+  create(user: UserModel) {
+    return this
+      .http
+      .post<UserModel, UserModel>(this.baseUrl, user)
+      .pipe(
+        map((response) => response.result)
+      );
+  }
 }

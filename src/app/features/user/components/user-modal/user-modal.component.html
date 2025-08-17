@@ -1,49 +1,87 @@
-<app-modal [title]="title">
+<app-modal [title]="title" #modal>
   <div modal-body class="user-modal">
     <form [formGroup]="form" class="user-modal__form">
+      <app-input
+        id="name"
+        label="Nome"
+        type="text"
+        placeholder="Digite seu nome"
+        formControlName="name"
+        [required]="true"
+        [Icon]="'fa-solid fa-user'"
+        [error]="!!(form.get('name')?.errors && form.get('name')?.touched)"
+      />
+
+      <app-input
+        id="cpf"
+        label="CPF"
+        type="text"
+        placeholder="000.000.000-00"
+        formControlName="cpf"
+        [required]="true"
+        [error]="!!(form.get('cpf')?.errors && form.get('cpf')?.touched)"
+        mask="000.000.000-00"
+        [showMaskTyped]="true"
+        [Icon]="'fa-solid fa-id-card'"
+        [dropSpecialCharacters]="false"
+      />
+
+      <app-input
+        id="email"
+        label="E-mail"
+        type="email"
+        placeholder="Digite seu e-mail"
+        formControlName="email"
+        [required]="true"
+        [error]="!!(form.get('email')?.errors && form.get('email')?.touched)"
+        [Icon]="'fa-solid fa-envelope'"
+      />
+
+      <app-input
+        id="phone"
+        label="Telefone"
+        type="tel"
+        placeholder="(00) 00000-0000"
+        formControlName="phone"
+        [required]="true"
+        mask="(00) 00000-0000"
+        [showMaskTyped]="true"
+        [dropSpecialCharacters]="false"
+        [Icon]="'fa-solid fa-phone'"
+      />
+
       <div class="sol-input-group">
-        <input type="text" id="name" class="sol-input primary" formControlName="name" placeholder="Nome" />
-
-        @if (form.get('name')?.errors && form.get('name')?.touched) {
-        <div class="sol-input-group__error">
-          <p class="sol-error-message">Nome inválido</p>
-        </div>
-        }
-      </div>
-
-      <div class="sol-input-group">
-        <input type="email" id="email" class="sol-input primary" formControlName="email" placeholder="E-mail" />
-
-        @if (form.get('email')?.errors && form.get('email')?.touched) {
-        <div class="sol-input-group__error">
-          <p class="sol-error-message">E-mail inválido</p>
-        </div>
-        }
-      </div>
-
-      <div class="sol-input-group">
-        <input type="text" id="phone" class="sol-input primary" formControlName="phone" placeholder="Telefone" />
+        <app-select
+          id="role"
+          label="Perfil"
+          placeholder="Selecione um perfil"
+          [options]="roleOptions()"
+          formControlName="roleId"
+          [required]="true"
+          [error]="!!(form.get('roleId')?.errors && form.get('roleId')?.touched)"
+          [icon]="'fa-solid fa-user-shield'"
+        />
       </div>
 
       <div class="user-modal__form__group">
-        <div class="sol-input-group">
-          <input type="password" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
-
-          @if (form.get('password')?.errors && form.get('password')?.touched) {
-          <div class="sol-input-group__error">
-            <p class="sol-error-message">Senha é obrigatória</p>
-          </div>
-          }
-        </div>
-        <div class="sol-input-group">
-          <input type="password" id="confirm-password" class="sol-input primary" formControlName="confirmPassword" placeholder="Confirmar senha" />
-
-          @if (form.get('confirmPassword')?.errors && form.get('confirmPassword')?.touched) {
-          <div class="sol-input-group__error">
-            <p class="sol-error-message">Confirmação de senha é obrigatória</p>
-          </div>
-          }
-        </div>
+        <app-input
+          id="password"
+          label="Senha"
+          type="password"
+          placeholder="Digite sua senha"
+          formControlName="password"
+          [required]="true"
+          [error]="!!(form.get('password')?.errors && form.get('password')?.touched)"
+        />
+        <app-input
+          id="confirm-password"
+          label="Confirmar Senha"
+          type="password"
+          placeholder="Confirme sua senha"
+          formControlName="confirmPassword"
+          [required]="true"
+          [error]="!!(form.get('confirmPassword')?.errors && form.get('confirmPassword')?.touched)"
+        />
       </div>
 
       @if (form.errors?.['passwordMismatch'] && form.touched) {
@@ -54,7 +92,7 @@
     </form>
   </div>
   <div modal-footer class="modal-footer">
-    <button class="sol-button">Cancelar</button>
-    <button class="sol-button accent" (click)="onSubmit()">Salvar</button>
+    <button class="sol-button" (click)="onCancel()">Cancelar</button>
+    <button class="sol-button accent" (click)="onSubmit()" [disabled]="form.invalid || form.pristine">Salvar</button>
   </div>
 </app-modal>

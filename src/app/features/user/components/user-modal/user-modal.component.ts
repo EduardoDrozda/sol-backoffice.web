@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, Input, input, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, input, signal, viewChild } from '@angular/core';
 import { UserModel } from '@core/models/user.model';
 import { ModalComponent } from '@shared/modules/modal';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,10 +8,11 @@ import { RoleService } from '@core/services/role';
 import { RoleModel } from '@core/models';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastService } from '@shared/modules/toast/toast.service';
+import { SelectComponent, SelectOption, InputComponent } from '@shared/components';
 
 @Component({
   selector: 'app-user-modal',
-  imports: [ModalComponent, CommonModule, ReactiveFormsModule],
+  imports: [ModalComponent, CommonModule, ReactiveFormsModule, SelectComponent, InputComponent],
   templateUrl: './user-modal.component.html',
   styleUrl: './user-modal.component.scss'
 })
@@ -23,13 +24,18 @@ export class UserModalComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastService = inject(ToastService);
+  private readonly modal = viewChild<ModalComponent>('modal');
+
 
   readonly roles = signal<RoleModel[]>([]);
+  readonly roleOptions = signal<SelectOption[]>([]);
 
   readonly form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
+    cpf: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.required],
+    roleId: ['', Validators.required],
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required]
   }, {
@@ -46,6 +52,12 @@ export class UserModalComponent {
       .subscribe({
         next: (roles) => {
           this.roles.set(roles);
+          // Converter roles para opções do select
+          const options: SelectOption[] = roles.map(role => ({
+            value: role.id,
+            label: role.name
+          }));
+          this.roleOptions.set(options);
         },
         error: () => {
           this.toastService.showError('Erro ao carregar roles');
@@ -59,6 +71,11 @@ export class UserModalComponent {
       return;
     }
 
-    // TODO: Implementar lógica de envio do formulário
+    this.modal()?.close(this.form.value);
+  }
+
+  onCancel(): void {
+    this.form.reset();
+    this.modal()?.close();
   }
 }

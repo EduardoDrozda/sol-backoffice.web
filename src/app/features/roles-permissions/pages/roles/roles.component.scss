@@ -1,0 +1,16 @@
+.roles {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  &__new-role-container {
+    // Estilos para o container do botão novo cargo
+  }
+
+  &__content {
+    // Estilos para o conteúdo da lista
+  }
+}

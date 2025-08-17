@@ -1,0 +1,43 @@
+<div class="sol-select-group" [class.error]="error">
+  @if (label) {
+    <label [for]="id" class="sol-select-group__label">
+      {{ label }}
+      @if (required) {
+        <span class="sol-select-group__required">*</span>
+      }
+    </label>
+  }
+
+  <div class="sol-select-wrapper" [class.has-icon]="icon">
+    @if (icon) {
+      <i class="sol-select__icon" [class]="icon"></i>
+    }
+    <select
+      [id]="id"
+      [disabled]="disabled"
+      (change)="onSelectionChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      class="sol-select"
+      [class.error]="error"
+      [class.disabled]="disabled"
+    >
+      <option value="" [selected]="!value">{{ placeholder }}</option>
+      @for (option of options; track option.value) {
+        <option
+          [value]="option.value"
+          [selected]="isValueEqual(option.value, value)"
+          [disabled]="option.disabled"
+        >
+          {{ option.label }}
+        </option>
+      }
+    </select>
+  </div>
+
+  @if (error) {
+    <div class="sol-select-group__error">
+      <p class="sol-error-message">Campo obrigatório</p>
+    </div>
+  }
+</div>
