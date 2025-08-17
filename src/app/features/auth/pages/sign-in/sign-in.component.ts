@@ -5,11 +5,13 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { AuthLayoutComponent } from '@features/auth/components/auth-layout';
 import { LoadingComponent, LoadingService } from '@shared/modules/loading';
 import { ToastService } from '@shared/modules/toast/toast.service';
+import { InputComponent } from '@shared/components/input';
 import { finalize } from 'rxjs/operators';
+import { RoutesEnum } from '@core/enums/routes.enum';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [ReactiveFormsModule, AuthLayoutComponent, LoadingComponent],
+  imports: [ReactiveFormsModule, AuthLayoutComponent, LoadingComponent, InputComponent],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss'
 })
@@ -22,8 +24,8 @@ export class SignInComponent {
   readonly loading = inject(LoadingService);
 
   form: FormGroup = this.formBuilder.group({
-    email: ['admin@email.com', [Validators.required, Validators.email]],
-    password: ['password123', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   onSubmit() {
@@ -34,11 +36,30 @@ export class SignInComponent {
       .subscribe({
         next: () => {
           this.toast.showSuccess('Login realizado com sucesso');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate([RoutesEnum.DASHBOARD]);
         },
         error: () => {
           this.toast.showError('Erro ao fazer login');
         }
       });
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.form.get(fieldName);
+    if (!control?.errors || !control?.touched) return '';
+
+    if (control.errors['required']) {
+      return fieldName === 'email' ? 'E-mail é obrigatório' : 'Senha é obrigatória';
+    }
+
+    if (control.errors['email']) {
+      return 'E-mail inválido';
+    }
+
+    if (control.errors['minlength']) {
+      return 'Senha deve ter pelo menos 6 caracteres';
+    }
+
+    return 'Campo inválido';
   }
 }

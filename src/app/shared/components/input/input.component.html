@@ -8,41 +8,45 @@
     </label>
   }
 
-  <div class="sol-input-wrapper" [class.has-prefix]="Icon" [class.has-password-toggle]="type === 'password'">
-    @if (Icon) {
-      <i class="sol-input-prefix" [class]="Icon"></i>
+  <div
+    class="sol-input-wrapper"
+    [class.has-password-toggle]="type === 'password'"
+    [class.has-prefix]="icon"
+  >
+    @if (icon) {
+      <i class="sol-input-prefix" [class]="icon"></i>
     }
     <input
-      [type]="getInputType()"
-      [id]="id"
-      [name]="name"
-      [placeholder]="placeholder"
-      [disabled]="disabled"
-      [readonly]="readonly"
       [attr.maxlength]="maxlength"
       [attr.minlength]="minlength"
       [attr.pattern]="pattern"
       [autocomplete]="autocomplete"
-      [value]="value"
-      [mask]="mask"
-      [showMaskTyped]="showMaskTyped"
+      [disabled]="disabled"
       [dropSpecialCharacters]="dropSpecialCharacters"
-      (input)="onInput($event)"
-      (focus)="onFocus($event)"
+      [id]="id"
+      [mask]="mask"
+      [name]="name || id || ''"
+      [placeholder]="placeholder"
+      [readonly]="readonly"
+      [showMaskTyped]="showMaskTyped"
+      [type]="getInputType()"
+      [(ngModel)]="innerValue"
+      (ngModelChange)="handleModelChange($event)"
       (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
       class="sol-input"
-      [class.primary]="!error"
-      [class.error]="error"
       [class.disabled]="disabled"
+      [class.error]="error"
+      [class.primary]="!error"
       [class.readonly]="readonly"
     />
     @if (type === 'password') {
       <button
-        type="button"
-        class="sol-input-password-toggle"
         (click)="togglePasswordVisibility()"
         [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+        class="sol-input-password-toggle"
         tabindex="0"
+        type="button"
       >
         <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </button>
@@ -51,7 +55,7 @@
 
   @if (error) {
     <div class="sol-input-group__error">
-      <p class="sol-error-message">Campo obrigatório</p>
+      <p class="sol-error-message">{{ errorMessage || 'Campo obrigatório' }}</p>
     </div>
   }
 </div>

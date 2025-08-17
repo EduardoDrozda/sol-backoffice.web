@@ -160,6 +160,7 @@
     background-color: transparent;
     outline: none;
     border-radius: var(--spacing-2);
+    cursor: pointer;
 
     i {
       width: 20px;
@@ -210,7 +211,6 @@
   }
 }
 
-// Estilos para menus com submenus
 .nav-item-with-children {
   width: 100%;
 }

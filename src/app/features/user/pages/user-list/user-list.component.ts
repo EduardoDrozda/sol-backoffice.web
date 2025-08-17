@@ -191,10 +191,11 @@ export class UserListComponent {
       width: '1000px'
     });
 
-    modalRef.afterClosed().subscribe((result) => {
+    modalRef.afterClosed().subscribe((result: UserModel & { confirmPassword?: string } | null) => {
       if (!result) return;
 
       if (result && !result?.id) {
+        delete result.confirmPassword;
         this.createUser(result);
       }
     });
@@ -204,6 +205,7 @@ export class UserListComponent {
     this.userService.create(user).subscribe({
       next: () => {
         this.toastService.showSuccess('Usuário criado com sucesso');
+        this.loadUsers();
       }
     });
   }

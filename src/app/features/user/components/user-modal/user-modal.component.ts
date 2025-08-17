@@ -32,7 +32,6 @@ export class UserModalComponent {
 
   readonly form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
-    cpf: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.required],
     roleId: ['', Validators.required],

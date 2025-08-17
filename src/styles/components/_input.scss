@@ -1,5 +1,88 @@
 @use '../tokens' as *;
 
+.sol-input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+
+  &__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-1);
+  }
+
+  &__required {
+    color: var(--color-error);
+    margin-left: var(--spacing-1);
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-1);
+  }
+
+  &.error .sol-input {
+    border-color: var(--color-error);
+  }
+}
+
+.sol-input-wrapper {
+  position: relative;
+  width: 100%;
+
+  &.has-prefix .sol-input {
+    padding-left: calc(var(--spacing-3) + 20px + var(--spacing-2));
+  }
+
+  &.has-password-toggle .sol-input {
+    padding-right: calc(var(--spacing-3) + 20px + var(--spacing-2));
+  }
+}
+
+.sol-input-prefix {
+  position: absolute;
+  left: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sol-input-password-toggle {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  padding: var(--spacing-1);
+  border-radius: 4px;
+  z-index: 1;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &:active {
+    outline: none;
+  }
+}
+
 .sol-input {
   width: 100%;
   padding: var(--spacing-3);
@@ -10,6 +93,7 @@
   background-color: white;
   color: var(--color-text-primary);
   transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 44px;
 
   &::placeholder {
     color: var(--color-text-secondary);
@@ -19,41 +103,66 @@
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); // azul claro
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
   }
 
-  &:disabled {
-    background-color: var(--color-surface-alt);
-    color: var(--color-text-disabled);
-    cursor: not-allowed;
+  &:hover:not(:disabled):not(.readonly) {
+    border-color: var(--color-primary);
   }
 
   &.primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
+    background-color: white;
+    color: var(--color-text-primary);
   }
 
   &.error {
-    background-color: var(--color-error-light);
-    color: var(--color-error);
+    border-color: var(--color-error);
+    background-color: white;
+    color: var(--color-text-primary);
+  }
+
+  &.disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    border-color: var(--color-border-light);
+  }
+
+  &.readonly {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-secondary);
+    cursor: default;
+    border-color: var(--color-border-light);
+  }
+
+  &[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  &[type="tel"] {
+    font-family: monospace;
   }
 }
 
-.sol-input-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.sol-input-group__error {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  margin-top: var(--spacing-1);
-}
-
+// Estilos para mensagens de erro
 .sol-error-message {
   color: var(--color-error);
   font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .sol-input {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-2);
+    min-height: 40px;
+  }
 }

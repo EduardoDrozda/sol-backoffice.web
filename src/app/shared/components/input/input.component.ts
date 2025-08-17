@@ -13,49 +13,51 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
+      multi: true,
     },
-    provideNgxMask()
-  ]
+    provideNgxMask(),
+  ],
 })
 export class InputComponent implements ControlValueAccessor {
-  @Input() type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' = 'text';
-  @Input() placeholder: string = '';
-  @Input() disabled: boolean = false;
-  @Input() error: boolean = false;
-  @Input() required: boolean = false;
-  @Input() label?: string;
-  @Input() id?: string;
-  @Input() name?: string;
   @Input() autocomplete?: string;
-  @Input() readonly: boolean = false;
-  @Input() maxlength?: number;
-  @Input() minlength?: number;
-  @Input() pattern?: string;
+  @Input() disabled: boolean = false;
+  @Input() dropSpecialCharacters: boolean | string[] | readonly string[] | null = true;
+  @Input() error: boolean = false;
+  @Input() errorMessage?: string;
+  @Input() icon?: string;
+  @Input() id?: string;
+  @Input() label?: string;
   @Input() mask?: string | null;
   @Input() maskOptions?: any;
+  @Input() maxlength?: number;
+  @Input() minlength?: number;
+  @Input() name?: string;
+  @Input() pattern?: string;
+  @Input() placeholder: string = '';
+  @Input() readonly: boolean = false;
+  @Input() required: boolean = false;
   @Input() showMaskTyped: boolean | null = false;
-  @Input() dropSpecialCharacters: boolean | string[] | readonly string[] | null = true;
-  @Input() Icon?: string;
+  @Input() type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' = 'text';
 
-  @Output() inputChange = new EventEmitter<string>();
-  @Output() focusEvent = new EventEmitter<FocusEvent>();
   @Output() blurEvent = new EventEmitter<FocusEvent>();
+  @Output() focusEvent = new EventEmitter<FocusEvent>();
+  @Output() inputChange = new EventEmitter<string>();
 
-  value: string = '';
-  showPassword: boolean = false;
-  private onChange = (value: any) => {};
-  private onTouched = () => {};
+  innerValue: string = '';
+  showPassword = false;
+
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
 
   writeValue(value: any): void {
-    this.value = value || '';
+    this.innerValue = value ?? '';
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -63,11 +65,10 @@ export class InputComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.value = target.value;
-    this.onChange(this.value);
-    this.inputChange.emit(this.value);
+  handleModelChange(value: string): void {
+    this.innerValue = value;
+    this.onChange(value);
+    this.inputChange.emit(value);
   }
 
   onFocus(event: FocusEvent): void {

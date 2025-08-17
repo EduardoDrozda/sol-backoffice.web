@@ -8,22 +8,8 @@
         placeholder="Digite seu nome"
         formControlName="name"
         [required]="true"
-        [Icon]="'fa-solid fa-user'"
+        [icon]="'fa-solid fa-user'"
         [error]="!!(form.get('name')?.errors && form.get('name')?.touched)"
-      />
-
-      <app-input
-        id="cpf"
-        label="CPF"
-        type="text"
-        placeholder="000.000.000-00"
-        formControlName="cpf"
-        [required]="true"
-        [error]="!!(form.get('cpf')?.errors && form.get('cpf')?.touched)"
-        mask="000.000.000-00"
-        [showMaskTyped]="true"
-        [Icon]="'fa-solid fa-id-card'"
-        [dropSpecialCharacters]="false"
       />
 
       <app-input
@@ -34,7 +20,7 @@
         formControlName="email"
         [required]="true"
         [error]="!!(form.get('email')?.errors && form.get('email')?.touched)"
-        [Icon]="'fa-solid fa-envelope'"
+        [icon]="'fa-solid fa-envelope'"
       />
 
       <app-input
@@ -47,7 +33,7 @@
         mask="(00) 00000-0000"
         [showMaskTyped]="true"
         [dropSpecialCharacters]="false"
-        [Icon]="'fa-solid fa-phone'"
+        [icon]="'fa-solid fa-phone'"
       />
 
       <div class="sol-input-group">

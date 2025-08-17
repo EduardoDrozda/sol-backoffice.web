@@ -6,25 +6,23 @@
     </div>
 
     <form [formGroup]="form" class="sign-in__form" (ngSubmit)="onSubmit()">
-      <div class="sol-input-group">
-        <input type="email" id="email" class="sol-input primary" formControlName="email" placeholder="E-mail" />
+      <app-input
+        type="email"
+        id="email"
+        placeholder="E-mail"
+        [error]="!!(form.get('email')?.errors && form.get('email')?.touched)"
+        [errorMessage]="getErrorMessage('email')"
+        formControlName="email"
+      />
 
-        @if (form.get('email')?.errors && form.get('email')?.touched) {
-        <div class="sol-input-group__error">
-          <p class="sol-error-message">E-mail inválido</p>
-        </div>
-        }
-      </div>
-
-      <div class="sol-input-group">
-        <input type="password" id="password" class="sol-input primary" formControlName="password" placeholder="Senha" />
-
-        @if (form.get('password')?.errors && form.get('password')?.touched) {
-        <div class="sol-input-group__error">
-          <p class="sol-error-message">Senha inválida</p>
-        </div>
-        }
-      </div>
+      <app-input
+        type="password"
+        id="password"
+        placeholder="Senha"
+        [error]="!!(form.get('password')?.errors && form.get('password')?.touched)"
+        [errorMessage]="getErrorMessage('password')"
+        formControlName="password"
+      />
 
       <button type="submit" class="sol-button primary" [disabled]="form.invalid || loading.isLoading('sign-in')">
         @if (loading.isLoading('sign-in')) {

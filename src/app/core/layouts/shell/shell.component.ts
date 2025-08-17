@@ -1,8 +1,10 @@
-import { Component, HostListener, signal, computed } from '@angular/core';
+import { Component, HostListener, signal, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { PwaStatusComponent } from '@core/components/pwa-status/pwa-status.component';
 import { CommonModule } from '@angular/common';
 import { RouteOptions } from '@core/models/route-options.model';
+import { AuthService } from '@core/services';
+import { RoutesEnum } from '@core/enums/routes.enum';
 
 @Component({
   selector: 'app-shell',
@@ -16,16 +18,18 @@ export class ShellComponent {
   readonly isMobile = signal(false);
   readonly expandedMenus = signal<Set<string>>(new Set());
 
+  private readonly authService = inject(AuthService);
+
   readonly routes: RouteOptions[] = [
     {
       title: 'Dashboard',
       icon: 'fa-solid fa-gauge-high',
-      path: '/dashboard'
+      path: RoutesEnum.DASHBOARD
     },
     {
       title: 'Usuários',
       icon: 'fa-solid fa-users',
-      path: '/users'
+      path: RoutesEnum.USERS
     },
     {
       title: 'Configurações',
@@ -34,12 +38,12 @@ export class ShellComponent {
         {
           title: 'Cargos',
           icon: 'fa-solid fa-user-tie',
-          path: '/roles'
+          path: RoutesEnum.ROLES
         },
         {
           title: 'Permissões',
           icon: 'fa-solid fa-shield-halved',
-          path: '/permissions'
+          path: RoutesEnum.PERMISSIONS
         }
       ]
     }
@@ -94,5 +98,9 @@ export class ShellComponent {
     }
 
     this.expandedMenus.set(newExpanded);
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
