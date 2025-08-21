@@ -1,0 +1,247 @@
+.sol-table-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.sol-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border, #e0e0e0);
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: var(--color-primary-light, #4f7cff);
+    font-weight: 600;
+    color: var(--color-text-white, #fff);
+    position: relative;
+    user-select: none;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--color-primary, #007bff);
+    }
+
+    .sol-table-sort-icon {
+      margin-left: 8px;
+      color: var(--color-text-white, #fff);
+      font-size: 12px;
+    }
+  }
+
+  // Arredondar cantos superiores do header
+  thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+  }
+  thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+  }
+
+  // Remover a borda inferior da última linha
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td {
+    color: var(--color-text-primary, #333);
+  }
+
+  th[style*="width"], td[style*="width"] {
+    box-sizing: border-box;
+  }
+
+  th[style*="width: auto"], td[style*="width: auto"] {
+    width: auto;
+  }
+
+  th[style*="px"], td[style*="px"] {
+    width: var(--col-width);
+  }
+
+  th[style*="%"], td[style*="%"] {
+    width: var(--col-width);
+  }
+
+  .col-checkbox {
+    width: 50px;
+    text-align: center;
+  }
+
+  .col-actions {
+    width: 80px;
+    text-align: center;
+    position: relative;
+  }
+
+  .col-date {
+    width: 120px;
+  }
+
+  .col-email {
+    width: 200px;
+  }
+
+  .col-name {
+    width: 150px;
+  }
+
+  .col-role {
+    width: 120px;
+  }
+
+  .col-flex {
+    width: auto;
+  }
+
+  .sol-table-checkbox {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .sol-table-actions {
+    position: relative;
+    display: inline-block;
+
+    &__trigger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--color-background-secondary, #f0f0f0);
+      }
+    }
+
+    &__icon {
+      font-size: 16px;
+      color: var(--color-text-secondary, #666);
+    }
+
+    &__menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid var(--color-border, #e0e0e0);
+      border-radius: 6px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      min-width: 150px;
+      z-index: 9999;
+      transform: translateY(4px);
+      white-space: nowrap;
+      overflow: visible;
+
+      li {
+        margin: 0;
+        padding: 0;
+
+        button {
+          width: 100%;
+          text-align: left;
+          padding: 8px 12px;
+          border: none;
+          background: none;
+          cursor: pointer;
+          font-size: 14px;
+          color: var(--color-text-primary, #333);
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: var(--color-background-secondary, #f8f9fa);
+          }
+
+          .action-icon {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .sol-table-loading,
+  .sol-table-no-data {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-text-secondary, #666);
+  }
+
+  .sol-table-loading-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sol-table-pagination-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 16px 0;
+
+    &.right {
+      justify-content: flex-end;
+    }
+
+    &.center {
+      justify-content: center;
+    }
+
+    &.left {
+      justify-content: flex-start;
+    }
+  }
+
+  .sol-table-pagination-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border, #e0e0e0);
+    background: white;
+    color: var(--color-text-primary, #333);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-background-secondary, #f8f9fa);
+      border-color: var(--color-primary, #007bff);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background-color: var(--color-primary, #007bff);
+      color: white;
+      border-color: var(--color-primary, #007bff);
+    }
+
+    &.icon-btn {
+      padding: 8px;
+      min-width: 36px;
+    }
+
+    &.page-btn {
+      min-width: 40px;
+    }
+  }
+}

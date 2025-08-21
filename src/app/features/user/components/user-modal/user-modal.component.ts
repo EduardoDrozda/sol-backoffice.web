@@ -46,15 +46,16 @@ export class UserModalComponent {
   }
 
   private loadRoles(): void {
-    this.roleService.getAllRoles()
+    this.roleService.getAllSimple()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (roles) => {
-          this.roles.set(roles);
-          const options: SelectOption[] = roles.map(role => ({
+        next: (result) => {
+          this.roles.set(result || []);
+          const options: SelectOption[] = this.roles().map(role => ({
             value: role.id,
             label: role.name
           }));
+
           this.roleOptions.set(options);
         },
         error: () => {

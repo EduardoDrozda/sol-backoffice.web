@@ -1,0 +1,37 @@
+@use 'mixins/media' as *;
+
+.role-list {
+  width: 100%;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-4);
+
+    @include media(md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__new-role-container {
+    width: 100%;
+
+    @include media(md) {
+      width: auto;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+
+    @include media(md) {
+      overflow-y: auto;
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<app-modal [title]="title" #modal>
+  <div modal-body class="role-modal">
+    <form [formGroup]="form" class="role-modal__form">
+      <app-input
+        id="name"
+        label="Nome"
+        type="text"
+        placeholder="Digite o nome do cargo"
+        formControlName="name"
+        [required]="true"
+        [icon]="'fa-solid fa-user-tie'"
+        [error]="!!(form.get('name')?.errors && form.get('name')?.touched)"
+      />
+
+      <div class="sol-input-group">
+        <label for="description" class="sol-input-group__label">
+          Descrição
+          <span class="sol-input-group__required">*</span>
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="Digite a descrição do cargo"
+          formControlName="description"
+          class="sol-textarea"
+          [class.error]="!!(form.get('description')?.errors && form.get('description')?.touched)"
+        ></textarea>
+        @if (form.get('description')?.errors && form.get('description')?.touched) {
+          <div class="sol-input-group__error">
+            <p class="sol-error-message">Campo obrigatório</p>
+          </div>
+        }
+      </div>
+    </form>
+  </div>
+  <div modal-footer class="modal-footer">
+    <button class="sol-button" (click)="onCancel()">Cancelar</button>
+    <button class="sol-button accent" (click)="onSubmit()" [disabled]="form.invalid || form.pristine">
+      {{ role ? 'Atualizar' : 'Criar' }}
+    </button>
+  </div>
+</app-modal>

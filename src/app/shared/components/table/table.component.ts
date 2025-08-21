@@ -7,6 +7,7 @@ import { LoadingComponent } from '@shared/modules/loading';
   selector: 'sol-table',
   imports: [CommonModule, LoadingComponent],
   templateUrl: './table.component.html',
+  styleUrl: './table.component.scss'
 })
 export class TableComponent<T> {
   readonly data = input.required<T[]>();

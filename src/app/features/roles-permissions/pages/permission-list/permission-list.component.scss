@@ -1,4 +1,4 @@
-.roles {
+.permission-list {
   &__header {
     display: flex;
     justify-content: space-between;
@@ -6,8 +6,8 @@
     margin-bottom: 2rem;
   }
 
-  &__new-role-container {
-    // Estilos para o container do botão novo cargo
+  &__new-permission-container {
+    // Estilos para o container do botão nova permissão
   }
 
   &__content {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RolesComponent } from './roles.component';
+import { PermissionListComponent } from './permissions.component';
 
-describe('RolesComponent', () => {
-  let component: RolesComponent;
-  let fixture: ComponentFixture<RolesComponent>;
+describe('PermissionListComponent', () => {
+  let component: PermissionListComponent;
+  let fixture: ComponentFixture<PermissionListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RolesComponent]
+      imports: [PermissionListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RolesComponent);
+    fixture = TestBed.createComponent(PermissionListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -7,6 +7,7 @@ export type TableColumn<T> = {
   type?: 'checkbox' | 'actions';
   actions?: { label: string; icon?: string; callback: (row: T) => void }[];
   sortable?: boolean;
+  width?: string | number;
 }
 
 export type TableField<T> = {

@@ -1,0 +1,36 @@
+@use 'mixins/media' as *;
+
+.role-modal {
+  width: 100%;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-4);
+  }
+}
+
+.sol-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  &.error {
+    border-color: var(--color-error);
+  }
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+  }
+}

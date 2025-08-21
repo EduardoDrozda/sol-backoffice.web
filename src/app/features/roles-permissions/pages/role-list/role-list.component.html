@@ -1,0 +1,32 @@
+<div class="role-list">
+  <div class="role-list__header">
+    <h1 class="page-title">Cargos</h1>
+
+    <div class="role-list__new-role-container">
+      <button class="sol-button accent" (click)="openRoleModal()">
+        <span class="sol-button__icon">
+          <i class="sol-icon sol-icon--plus"></i>
+        </span>
+        <span class="sol-button__text">Novo cargo</span>
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <input type="text" formControlName="search" placeholder="Buscar..." class="sol-input" />
+  </form>
+
+  <div class="page-content">
+    <div class="role-list__content">
+      <sol-table
+        [columns]="columns()"
+        [data]="roles()"
+        [loading]="loading()"
+        [paginable]="true"
+        [pagination]="pagination()"
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+      />
+    </div>
+  </div>
+</div>

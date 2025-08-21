@@ -48,33 +48,6 @@
           [icon]="'fa-solid fa-user-shield'"
         />
       </div>
-
-      <div class="user-modal__form__group">
-        <app-input
-          id="password"
-          label="Senha"
-          type="password"
-          placeholder="Digite sua senha"
-          formControlName="password"
-          [required]="true"
-          [error]="!!(form.get('password')?.errors && form.get('password')?.touched)"
-        />
-        <app-input
-          id="confirm-password"
-          label="Confirmar Senha"
-          type="password"
-          placeholder="Confirme sua senha"
-          formControlName="confirmPassword"
-          [required]="true"
-          [error]="!!(form.get('confirmPassword')?.errors && form.get('confirmPassword')?.touched)"
-        />
-      </div>
-
-      @if (form.errors?.['passwordMismatch'] && form.touched) {
-      <div class="sol-input-group__error">
-        <p class="sol-error-message">As senhas não coincidem</p>
-      </div>
-      }
     </form>
   </div>
   <div modal-footer class="modal-footer">

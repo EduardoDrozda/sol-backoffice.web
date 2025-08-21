@@ -3,10 +3,10 @@ import { Routes } from "@angular/router";
 export const rolesPermissionsRoutes: Routes = [
   {
     path: 'roles',
-    loadComponent: () => import('./pages/roles/roles.component').then(m => m.RolesComponent)
+    loadComponent: () => import('./pages/role-list/role-list.component').then(m => m.RoleListComponent)
   },
   {
     path: 'permissions',
-    loadComponent: () => import('./pages/permissions/permissions.component').then(m => m.PermissionsComponent)
+    loadComponent: () => import('./pages/permission-list/permission-list.component').then(m => m.PermissionListComponent)
   }
 ];

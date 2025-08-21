@@ -22,4 +22,8 @@ export class HttpService {
   patch<I, O>(url: string, body: I): Observable<BaseResponse<O>> {
     return this.http.patch<BaseResponse<O>>(`${this.apiUrl}${url}`, body);
   }
+
+  delete<O>(url: string): Observable<BaseResponse<O>> {
+    return this.http.delete<BaseResponse<O>>(`${this.apiUrl}${url}`);
+  }
 }

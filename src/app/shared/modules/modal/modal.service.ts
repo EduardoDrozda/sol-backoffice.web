@@ -10,8 +10,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable, Subject } from 'rxjs';
 
 export interface ModalConfig {
   data?: any;
@@ -35,16 +34,19 @@ export class ModalService {
   private readonly appRef = inject(ApplicationRef);
 
   private modalRef: ComponentRef<any> | null = null;
-  private readonly _result = signal<any>(null);
-  readonly result$ = toObservable(this._result);
+  private resultSubject = new Subject<any>();
 
   open<T = any>(
     component: Type<T>,
     config: ModalConfig = {}
   ): ModalRef {
+    // Fechar modal anterior se existir
     if (this.modalRef) {
-      this.close();
+      this.forceClose();
     }
+
+    // Reset do result subject para nova instância
+    this.resultSubject = new Subject<any>();
 
     try {
       this.modalRef = createComponent(component, {
@@ -64,9 +66,11 @@ export class ModalService {
 
       return {
         close: (result?: any) => this.close(result),
-        afterClosed: () => this.result$
+        afterClosed: () => this.resultSubject.asObservable()
       };
     } catch (error) {
+      // Em caso de erro, limpar o result subject
+      this.resultSubject.complete();
       throw error;
     }
   }
@@ -107,7 +111,23 @@ export class ModalService {
         this.modalRef = null;
       }
 
-      this._result.set(result);
+      // Emitir o resultado e completar o subject
+      this.resultSubject.next(result);
+      this.resultSubject.complete();
     }, 300);
+  }
+
+  // Método para forçar o fechamento do modal (útil para cleanup)
+  forceClose(): void {
+    if (this.modalRef) {
+      this.appRef.detachView(this.modalRef.hostView);
+      this.modalRef.destroy();
+      this.modalRef = null;
+    }
+
+    // Limpar o subject
+    if (!this.resultSubject.closed) {
+      this.resultSubject.complete();
+    }
   }
 }
