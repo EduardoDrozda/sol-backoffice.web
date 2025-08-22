@@ -44,6 +44,24 @@ export class UserService {
       );
   }
 
+  resendConfirmationEmail(id: string) {
+    return this
+      .http
+      .post<any, any>(`${this.baseUrl}/${id}/resend-confirmation-email`, {})
+      .pipe(
+        map((response) => response.result)
+      );
+  }
+
+  resetUserPassword(id: string) {
+    return this
+      .http
+      .post<any, any>(`${this.baseUrl}/${id}/reset-password`, {})
+      .pipe(
+        map((response) => response.result)
+      );
+  }
+
   create(user: UserModel) {
     return this
       .http

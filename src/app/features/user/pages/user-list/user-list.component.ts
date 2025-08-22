@@ -175,11 +175,25 @@ export class UserListComponent {
   }
 
   private resendConfirmationEmail(user: UserModel): void {
-    // TODO: Implementar reenvio de email de confirmação
+    this.userService.resendConfirmationEmail(user.id).subscribe({
+      next: () => {
+        this.toastService.showSuccess('Email de confirmação reenviado com sucesso');
+      },
+      error: (error) => {
+        this.toastService.showError('Erro ao reenviar email de confirmação');
+      }
+    });
   }
 
   private resetPassword(user: UserModel): void {
-    // TODO: Implementar reset de senha
+    this.userService.resetUserPassword(user.id).subscribe({
+      next: () => {
+        this.toastService.showSuccess('Email para reset de senha enviado com sucesso');
+      },
+      error: (error) => {
+        this.toastService.showError('Erro ao enviar email para reset de senha');
+      }
+    });
   }
 
   openUserModal(user?: UserModel): void {
