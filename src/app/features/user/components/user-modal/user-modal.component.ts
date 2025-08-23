@@ -3,7 +3,6 @@ import { Component, DestroyRef, inject, Input, input, signal, viewChild } from '
 import { UserModel } from '@core/models/user.model';
 import { ModalComponent } from '@shared/modules/modal';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { passwordConfirmValidatorSimple } from '@shared/validators';
 import { RoleService } from '@core/services/role';
 import { RoleModel } from '@core/models';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -34,11 +33,7 @@ export class UserModalComponent {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.required],
-    roleId: ['', Validators.required],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required]
-  }, {
-    validators: passwordConfirmValidatorSimple()
+    roleId: ['', Validators.required]
   });
 
   constructor() {

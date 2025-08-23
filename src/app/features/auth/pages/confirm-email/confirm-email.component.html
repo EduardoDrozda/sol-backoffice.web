@@ -1,0 +1,46 @@
+<app-auth-layout>
+  <div class="confirm-email">
+    <div class="confirm-email__header">
+      <h1 class="sol-title">Confirmação de Email</h1>
+      <p class="sol-subtitle">Defina sua senha para ativar sua conta</p>
+    </div>
+
+    @if (tokenValid) {
+      <form [formGroup]="form" class="confirm-email__form" (ngSubmit)="onSubmit()">
+        <app-input
+          type="password"
+          id="password"
+          placeholder="Nova senha"
+          [error]="!!(form.get('password')?.errors && form.get('password')?.touched)"
+          [errorMessage]="getErrorMessage('password')"
+          formControlName="password"
+        />
+
+        <app-input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirmar senha"
+          [error]="!!((form.errors?.['passwordMismatch'] && form.get('confirmPassword')?.touched))"
+          [errorMessage]="getErrorMessage('confirmPassword')"
+          formControlName="confirmPassword"
+        />
+
+        <button type="submit" class="sol-button primary" [disabled]="form.invalid || loading.isLoading('confirm-email')">
+          @if (loading.isLoading('confirm-email')) {
+            <app-loading [size]="4" [inline]="true" />
+          }
+          Confirmar Email e Ativar Conta
+        </button>
+      </form>
+
+      <div class="confirm-email__footer">
+        <p>Já tem uma conta? <a [routerLink]="['/sign-in']" class="sol-link">Faça login</a></p>
+      </div>
+    } @else {
+      <div class="confirm-email__loading">
+        <app-loading [size]="8" />
+        <p>Validando token...</p>
+      </div>
+    }
+  </div>
+</app-auth-layout>

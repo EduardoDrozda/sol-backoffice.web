@@ -35,4 +35,22 @@
     flex-direction: column;
     gap: var(--spacing-4);
   }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-2);
+
+    .forgot-password-link {
+      color: var(--primary-color, #667eea);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--primary-color-dark, #764ba2);
+        text-decoration: underline;
+      }
+    }
+  }
 }

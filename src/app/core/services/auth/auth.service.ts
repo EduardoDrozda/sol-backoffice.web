@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http/http.service';
 import { BaseResponse } from '@core/models';
-import { CredentialModel, SignInResponseModel } from '@core/models/credential.model';
+import { CredentialModel, SignInResponseModel, ResetPasswordRequestModel, ResetPasswordConfirmModel, ResetPasswordResponseModel } from '@core/models/credential.model';
 import { UserModel } from '@core/models/user.model';
 import { Router } from '@angular/router';
 import { RoutesEnum } from '@core/enums/routes.enum';
@@ -23,6 +23,18 @@ export class AuthService {
 
   checkToken() {
     return this.http.get<BaseResponse<UserModel>>('/v1/check');
+  }
+
+  confirmEmailWithPassword(data: { token: string; password: string; confirmPassword: string }) {
+    return this.http.post<any, BaseResponse<any>>('/v1/users/confirm-email', data);
+  }
+
+  requestPasswordReset(data: ResetPasswordRequestModel) {
+    return this.http.post<ResetPasswordRequestModel, BaseResponse<ResetPasswordResponseModel>>('/v1/users/forgot-password', data);
+  }
+
+  resetPassword(data: ResetPasswordConfirmModel) {
+    return this.http.patch<ResetPasswordConfirmModel, BaseResponse<ResetPasswordResponseModel>>('/v1/users/reset-password', data);
   }
 
   logout() {

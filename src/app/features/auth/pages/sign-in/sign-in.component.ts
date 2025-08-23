@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { AuthLayoutComponent } from '@features/auth/components/auth-layout';
 import { LoadingComponent, LoadingService } from '@shared/modules/loading';
@@ -11,7 +11,7 @@ import { RoutesEnum } from '@core/enums/routes.enum';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [ReactiveFormsModule, AuthLayoutComponent, LoadingComponent, InputComponent],
+  imports: [ReactiveFormsModule, AuthLayoutComponent, LoadingComponent, InputComponent, RouterModule],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss'
 })
